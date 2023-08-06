@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/07/02 13:50:37 by vincent          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:00:36 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	main(int argc, char **argv)
 {
-	if (argc != 5)
+	if (argc < 5 || argc > 6)
 	{
-		
+		return (1);
 	}	
 }
