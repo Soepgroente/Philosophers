@@ -6,13 +6,13 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:50:51 by vincent           #+#    #+#             */
-/*   Updated: 2023/08/06 17:00:41 by vincent          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:17:03 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	ft_isdigit(char num)
+static bool	ft_isdigit(char num)
 {
 	if (num >= 48 && num <= 57)
 		return (true);
@@ -33,7 +33,7 @@ static bool	check_num(char *num)
 		return (true);
 }
 
-int	ft_ato_uint(char *num)
+int	ft_philatoi(char *num)
 {
 	int		i;
 	long	result;
