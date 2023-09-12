@@ -6,7 +6,7 @@
 #    By: vincent <vincent@student.42.fr>              +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
-#    Updated: 2023/09/11 15:48:19 by vvan-der      ########   odam.nl          #
+#    Updated: 2023/09/12 12:20:22 by vvan-der      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ RM		= rm -rf
 CFLAGS	= -Wextra -Wall -Werror -pthread #-fsanitize=address
 OBJDIR	= Philobjects
 
-SRCS	= philatoi.c main.c
+SRCS	= clean_up.c initialize.c main.c messages.c philatoi.c routine.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
