@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/12 12:53:33 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/12 20:37:38 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,9 @@ int	create_threads(t_data *data)
 	i = 0;
 	philos = malloc((data->ph_num + 1) * sizeof(pthread_t));
 	philos[data->ph_num] = NULL;
-	pthread_mutex_init(&data->mutex, NULL);
 	while (i < data->ph_num)
 	{
-		pthread_create(&philos[i], NULL, &some_function, data);
+		pthread_create(&philos[i], NULL, &start_routine, data);
 		i++;
 	}
 	i = 0;
@@ -62,19 +61,19 @@ int	parse_input(t_data *data, int argc, char **argv)
 	data->t_die = ft_philatoi(argv[2]);
 	data->t_eat = ft_philatoi(argv[3]);
 	data->t_sleep = ft_philatoi(argv[4]);
-	data->num_eat = 0;
 	if (argc == 6)
 		data->num_eat = ft_philatoi(argv[5]);
+	else
+		data->num_eat = -42;
 	if (data->ph_num == -1 || data->t_die == -1 || data->t_eat == -1 || \
 		data->t_sleep == -1 || data->num_eat == -1)
 		return (-1);
-	data->forks = malloc((data->ph_num + 1) * sizeof(int));
+	data->forks = malloc((data->ph_num) * sizeof(bool));
 	while (i < data->ph_num)
 	{
-		data->forks[i] = i;
+		data->forks[i] = false;
 		i++;
 	}
-	data->forks[i] = -1;
 	data->x = 0;
 	return (0);
 }

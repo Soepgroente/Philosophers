@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/12 12:47:21 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/12 20:38:04 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 
 typedef struct s_philo
 {
-	int		num;
-	bool	alive;
-	int		*left_fork;
-	int		*right_fork;
+	int				num;
+	int				num_eaten;
+	bool			alive;
+	bool			*left_fork;
+	bool			*right_fork;
+	pthread_mutex_t	mutex;
 }	t_philo;
 
 typedef struct s_data
@@ -40,8 +42,7 @@ typedef struct s_data
 	int				num_eat;
 	int				x;
 	int				num;
-	int				*forks;
-	pthread_mutex_t	mutex;
+	bool			*forks;
 }	t_data;
 
 /*	Initialization */
@@ -53,6 +54,6 @@ int		parse_input(t_data *data, int argc, char **argv);
 /*	Utility functions*/
 
 int		ft_philatoi(char *num);
-void	*some_function(void *data);
+int		start_routine(t_data *data);
 
 #endif
