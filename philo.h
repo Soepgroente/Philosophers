@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/12 20:38:04 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/14 12:59:49 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 # include <pthread.h>
 # include <errno.h>
 
+#define AVAILABLE 0
+#define TAKEN 1
+
+#define LEFT 0
+#define RIGHT 1
+
 typedef struct s_philo
 {
 	int				num;
@@ -30,19 +36,23 @@ typedef struct s_philo
 	bool			alive;
 	bool			*left_fork;
 	bool			*right_fork;
-	pthread_mutex_t	mutex;
+	bool			lf;
+	bool			rf;
+	pthread_mutex_t	lock;
 }	t_philo;
 
 typedef struct s_data
 {
-	int				ph_num;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
-	int				num_eat;
-	int				x;
-	int				num;
-	bool			*forks;
+	int		ph_num;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	int		num_eat;
+	int		x;
+	int		num;
+	bool	*forks;
+	bool	ready;
+	int		time;
 }	t_data;
 
 /*	Initialization */
@@ -54,6 +64,7 @@ int		parse_input(t_data *data, int argc, char **argv);
 /*	Utility functions*/
 
 int		ft_philatoi(char *num);
+int		take_fork(t_data *data, t_philo *henk, bool fork);
 int		start_routine(t_data *data);
 
 #endif

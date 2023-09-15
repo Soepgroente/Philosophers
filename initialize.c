@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/12 20:37:38 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/14 12:43:38 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 int	init_philo(t_data *data, t_philo *philo, int x)
 {
 	philo->num = x;
+	philo->num_eaten = 0;
+	philo->lf = false;
+	philo->rf = false;
 	philo->alive = true;
 	if (x == 0)
 	{
@@ -41,6 +44,7 @@ int	create_threads(t_data *data)
 		pthread_create(&philos[i], NULL, &start_routine, data);
 		i++;
 	}
+	data->ready = true;
 	i = 0;
 	while (i < data->ph_num)
 	{
@@ -75,5 +79,6 @@ int	parse_input(t_data *data, int argc, char **argv)
 		i++;
 	}
 	data->x = 0;
+	data->ready = false;
 	return (0);
 }
