@@ -1,54 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   initialize.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/14 12:43:38 by vvan-der      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   initialize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/12 12:14:57 by vvan-der          #+#    #+#             */
+/*   Updated: 2023/09/16 17:17:15 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_philo(t_data *data, t_philo *philo, int x)
+int	init_data(t_data *data)
+{
+	int	i;
+	t_philo		*subjects;
+
+	i = 0;
+	subjects = malloc(data->ph_num * sizeof(t_philo));
+	if (!subjects)
+		return (-1);
+	while (i < data->ph_num)
+		data->forks[i++] = AVAILABLE;
+	i = 0;
+	while (i < data->ph_num)
+	{
+		init_philo(data, &subjects[i], i);
+		data->philos[i] = subjects[i];
+	}
+	return (0);
+}
+
+void	init_philo(t_data *data, t_philo *philo, int x)
 {
 	philo->num = x;
 	philo->num_eaten = 0;
 	philo->lf = false;
 	philo->rf = false;
 	philo->alive = true;
+	pthread_mutex_init(&philo->lock, NULL);
 	if (x == 0)
 	{
-		philo->left_fork = data->forks[data->ph_num - 1];
-		philo->right_fork = data->forks[0];
+		philo->left_fork = &data->forks[data->ph_num - 1];
+		philo->right_fork = &data->forks[0];
+		printf("Fork (left) init by philo %d: %d\n", x, *philo->left_fork);
+		printf("Fork (right) init by philo %d: %d\n", x, *philo->right_fork);
 	}
 	else
 	{
-		philo->left_fork = data->forks[x - 1];
-		philo->right_fork = data->forks[x];
+		philo->left_fork = &data->forks[x - 1];
+		philo->right_fork = &data->forks[x];
+		printf("Fork (left) init by philo %d: %d\n", x, *philo->left_fork);
+		printf("Fork (right) init by philo %d: %d\n", x, *philo->right_fork);
 	}
+	data->philos[x] = *philo;
 }
 
 int	create_threads(t_data *data)
 {
-	pthread_t	*philos;
+	pthread_t	*threads;
 	int			i;
 	
 	i = 0;
-	philos = malloc((data->ph_num + 1) * sizeof(pthread_t));
-	philos[data->ph_num] = NULL;
+	threads = malloc((data->ph_num + 1) * sizeof(pthread_t));
+	if (!threads)
+		return (-1);
+	threads[data->ph_num] = NULL;
+	init_data(data);
 	while (i < data->ph_num)
 	{
-		pthread_create(&philos[i], NULL, &start_routine, data);
+		pthread_create(&threads[i], NULL, &start_routine, (void *) data);
 		i++;
 	}
 	data->ready = true;
+	stalk_philos(data);
 	i = 0;
 	while (i < data->ph_num)
 	{
-		pthread_join(philos[i], NULL);
+		pthread_join(threads[i], NULL);
 		i++;
 	}
 	return (0);

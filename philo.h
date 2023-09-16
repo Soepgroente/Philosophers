@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philo.h                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: vincent <vincent@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/14 12:59:49 by vvan-der      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
+/*   Updated: 2023/09/16 17:10:42 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <ctype.h>
 # include <pthread.h>
 # include <errno.h>
+# include <sys/time.h>
 
 #define AVAILABLE 0
 #define TAKEN 1
@@ -29,15 +30,19 @@
 #define LEFT 0
 #define RIGHT 1
 
+#define INFINITY 1
+
 typedef struct s_philo
 {
 	int				num;
 	int				num_eaten;
+	int				last_eaten;
 	bool			alive;
 	bool			*left_fork;
 	bool			*right_fork;
 	bool			lf;
 	bool			rf;
+	bool			saturated;
 	pthread_mutex_t	lock;
 }	t_philo;
 
@@ -50,21 +55,38 @@ typedef struct s_data
 	int		num_eat;
 	int		x;
 	int		num;
+	long	start_time;
 	bool	*forks;
 	bool	ready;
 	int		time;
+	t_philo	*philos;
 }	t_data;
 
 /*	Initialization */
 
 int		create_threads(t_data *d);
-int		init_philo(t_data *data, t_philo *philo, int x);
+void	init_philo(t_data *data, t_philo *philo, int x);
 int		parse_input(t_data *data, int argc, char **argv);
+void	*start_routine(void *d);
 
-/*	Utility functions*/
+/*	Monitoring	*/
+
+void	stalk_philos(t_data *data);
+
+/*	Utility functions	*/
 
 int		ft_philatoi(char *num);
-int		take_fork(t_data *data, t_philo *henk, bool fork);
-int		start_routine(t_data *data);
+
+/*	Eat and think	*/
+
+void	eat_foods(t_data *data, t_philo *henk);
+void	take_fork(t_data *data, t_philo *henk, bool fork);
+void	get_forked(t_data *data, t_philo *henk);
+
+/*	Time and sleep	*/
+
+long	get_time(void);
+void	ft_sleep(long sleep_duration);
+void	after_dinner_dip(t_data *data, t_philo *henk);
 
 #endif
