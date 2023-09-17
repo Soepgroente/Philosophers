@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/16 17:15:48 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/17 14:12:05 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	pull_the_plug(t_data *data)
 	{
 		p[i].alive = false;
 		pthread_mutex_destroy(&p[i].lock);
-		
 	}
 }
 
@@ -44,10 +43,12 @@ void	stalk_philos(t_data *data)
 				i++;
 			}
 			if (i == data->ph_num)
+			{
 				pull_the_plug(data);
-			return ;
+				return ;
+			}
 		}
-		i = 0;
+/* 		i = 0;
 		while (i < data->ph_num)
 		{
 			if (data->time - data->philos[i].last_eaten >= data->t_die)
@@ -58,7 +59,7 @@ void	stalk_philos(t_data *data)
 				return ;
 			}
 			i++;
-		}
+		} */
 		usleep(500);
 	}
 }

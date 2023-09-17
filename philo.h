@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/16 17:10:42 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/17 14:52:25 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ typedef struct s_data
 	t_philo	*philos;
 }	t_data;
 
+typedef struct s_args
+{
+	t_data	*data_struct;
+	int		num;
+}	t_args;
+
 /*	Initialization */
 
 int		create_threads(t_data *d);
@@ -76,12 +82,14 @@ void	stalk_philos(t_data *data);
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
+void	print_forks(t_data *data, bool *forks);
 
 /*	Eat and think	*/
 
 void	eat_foods(t_data *data, t_philo *henk);
-void	take_fork(t_data *data, t_philo *henk, bool fork);
 void	get_forked(t_data *data, t_philo *henk);
+void	take_left_fork(t_data *data, t_philo *henk);
+void	take_right_fork(t_data *data, t_philo *henk);
 
 /*	Time and sleep	*/
 
