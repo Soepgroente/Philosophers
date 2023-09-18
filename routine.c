@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 12:18:22 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/17 14:57:00 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   routine.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/18 12:21:57 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_sleep(long sleep_duration)
 	while (timestamp < goal_time)
 	{
 		timestamp = get_time();
-		usleep(100);
+		usleep(200);
 	}
 }
 
@@ -51,12 +51,12 @@ void	eat_foods(t_data *data, t_philo *henk)
 	{
 		henk->last_eaten = data->time;
 		printf("%d %d is eating\n", data->time, henk->num);
-		print_forks(data, data->forks);
+		// print_forks(data, data->forks);
 		ft_sleep(data->t_eat * 1000);
 		// pthread_mutex_lock(&henk->lock);
 		*henk->left_fork = AVAILABLE;
 		*henk->right_fork = AVAILABLE;
-		print_forks(data, data->forks);
+		// print_forks(data, data->forks);
 		henk->num_eaten++;
 		if (henk->num_eaten >= data->num_eat)
 			henk->saturated = true;
@@ -81,8 +81,6 @@ void	*start_routine(void *input)
 	if (henk->num % 2 == 1)
 		usleep(2000);
 	printf("Philosopher %d reporting!\n", henk->num);
-	data->start_time = get_time();
-	usleep(1000);
 	get_forked(data, henk);
 	return (NULL);
 }

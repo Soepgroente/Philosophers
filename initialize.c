@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   initialize.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 12:14:57 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/17 14:29:56 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   initialize.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/18 12:11:14 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	make_puppets(t_data *data)
 	subjects = malloc(data->ph_num * sizeof(t_philo));
 	if (!subjects)
 		return (-1);
+	data->philos = subjects;
 	while (i < data->ph_num)
 		data->forks[i++] = AVAILABLE;
 	i = 0;
 	while (i < data->ph_num)
 	{
 		init_philo(data, &subjects[i], i);
-		data->philos[i] = subjects[i];
 		i++;
 	}
 	return (0);
@@ -45,41 +45,44 @@ void	init_philo(t_data *data, t_philo *philo, int x)
 	{
 		philo->left_fork = &data->forks[data->ph_num - 1];
 		philo->right_fork = &data->forks[0];
-		printf("Fork (left)  init by philo %d: %d, address: %p\n", x, *philo->left_fork, philo->left_fork);
-		printf("Fork (right) init by philo %d: %d, address: %p\n", x, *philo->right_fork, philo->right_fork);
+		// printf("Fork (left)  init by philo %d: %d, address: %p\n", x, *philo->left_fork, philo->left_fork);
+		// printf("Fork (right) init by philo %d: %d, address: %p\n", x, *philo->right_fork, philo->right_fork);
 	}
 	else
 	{
 		philo->left_fork = &data->forks[x - 1];
 		philo->right_fork = &data->forks[x];
-		printf("Fork (left)  init by philo %d: %d, address: %p\n", x, *philo->left_fork, philo->left_fork);
-		printf("Fork (right) init by philo %d: %d, address: %p\n", x, *philo->right_fork, philo->right_fork);
+		// printf("Fork (left)  init by philo %d: %d, address: %p\n", x, *philo->left_fork, philo->left_fork);
+		// printf("Fork (right) init by philo %d: %d, address: %p\n", x, *philo->right_fork, philo->right_fork);
 	}
-	data->philos[x] = *philo;
 }
 
 int	create_threads(t_data *data)
 {
 	t_args		args;
 	pthread_t	*threads;
+	t_philo		*tmp;
 	int			i;
 	
 	i = 0;
-	threads = malloc((data->ph_num + 1) * sizeof(pthread_t));
+	tmp = data->philos;
+	threads = malloc((data->ph_num) * sizeof(pthread_t));
 	if (!threads)
 		return (-1);
-	threads[data->ph_num] = NULL;
 	make_puppets(data);
 	args.data_struct = data;
 	while (i < data->ph_num)
 	{
 		args.num = i;
 		pthread_create(&threads[i], NULL, &start_routine, (void *) &args);
-		usleep(1000);
+		// data->philos++;
 		i++;
+		// usleep(1000);
 	}
-	usleep(1000);
+	usleep(100);
+	data->start_time = get_time();
 	data->ready = true;
+	data->philos = tmp;
 	stalk_philos(data);
 	i = 0;
 	while (i < data->ph_num)
