@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/18 12:07:52 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/19 12:42:31 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,27 @@
 
 #define INFINITY 1
 
-typedef struct s_philo
+typedef struct s_philo t_philo;
+typedef struct s_data t_data;
+
+struct s_data
+{
+	int				ph_num;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				num_eat;
+	int				x;
+	int				num;
+	long			start_time;
+	bool			*forks;
+	bool			ready;
+	int				time;
+	pthread_mutex_t	lock;
+	t_philo			*philos;
+};
+
+struct s_philo
 {
 	int				num;
 	int				num_eaten;
@@ -44,34 +64,13 @@ typedef struct s_philo
 	bool			rf;
 	bool			saturated;
 	pthread_mutex_t	lock;
-}	t_philo;
-
-typedef struct s_data
-{
-	int		ph_num;
-	int		t_die;
-	int		t_eat;
-	int		t_sleep;
-	int		num_eat;
-	int		x;
-	int		num;
-	long	start_time;
-	bool	*forks;
-	bool	ready;
-	int		time;
-	t_philo	*philos;
-}	t_data;
-
-typedef struct s_args
-{
-	t_data	*data_struct;
-	int		num;
-}	t_args;
+	t_data			*data;
+};
 
 /*	Initialization */
 
 int		create_threads(t_data *d);
-void	init_philo(t_data *data, t_philo *philo, int x);
+int		init_philo(t_data *data, t_philo *philo, int x);
 int		parse_input(t_data *data, int argc, char **argv);
 void	*start_routine(void *d);
 
@@ -83,6 +82,7 @@ void	stalk_philos(t_data *data);
 
 int		ft_philatoi(char *num);
 void	print_forks(t_data *data, bool *forks);
+bool	on_your_marks(bool main_thread, t_data *data, pthread_mutex_t *lock);
 
 /*	Eat and think	*/
 

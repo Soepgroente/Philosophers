@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/18 12:21:57 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/19 12:36:11 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,16 @@ void	eat_foods(t_data *data, t_philo *henk)
 void	*start_routine(void *input)
 {
 	t_data	*data;
-	t_args	*args;
 	t_philo	*henk;
 
-	args = (t_args *) input;
-	data = args->data_struct;
-	henk = &data->philos[args->num];
-	while (data->ready == false)
+	henk = (t_philo *) input;
+	data = henk->data;
+	while (INFINITY)
+	{
+		if (on_your_marks(false, data, &data->lock) == true)
+			break ;
 		usleep(20);
+	}
 	if (henk->num % 2 == 1)
 		usleep(2000);
 	printf("Philosopher %d reporting!\n", henk->num);

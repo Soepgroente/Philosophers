@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utensils.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/14 12:56:38 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/17 14:58:43 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utensils.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/14 12:56:38 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/19 10:54:36 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	get_forked(t_data *data, t_philo *henk)
 	{
 		if (henk->lf == false && *henk->left_fork == AVAILABLE)
 			take_left_fork(data, henk);
-		if (henk->lf == true && henk->right_fork == AVAILABLE)
+		if (henk->lf == true && *henk->right_fork == AVAILABLE)
 			take_right_fork(data, henk);
 		usleep(100);
 	}
