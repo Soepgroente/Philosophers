@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:18:26 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 13:47:57 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 16:35:59 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ static void	free_forks(t_fork *forks, int num)
 void	clean_up(t_data *data)
 {
 	if (data->forks != NULL)
-		free_forks(data, data->ph_num);
+	{
+		free_forks(data->forks, data->ph_num);
+		free(data->forks);
+	}
 	if (data->philos != NULL)
+	{
 		free_henks(data->philos, data->ph_num);
-	free(data->forks);
-	free(data->philos);
-	free(data);
-	data = NULL;
+		free(data->philos);
+	}	
 }

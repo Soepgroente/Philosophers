@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 13:40:16 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 17:10:54 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 #define AVAILABLE 0
 #define TAKEN 1
 
-#define LEFT 0
-#define RIGHT 1
+#define NONE 0
+#define KILL 1
 
 #define INFINITY 1
 
@@ -51,7 +51,6 @@ struct s_data
 	int				num_eat;
 	int				num;
 	long			start_time;
-	bool			*forks;
 	bool			ready;
 	int				time;
 	pthread_mutex_t	lock;
@@ -63,8 +62,13 @@ struct s_philo
 {
 	int				num;
 	int				num_eaten;
+	int				max_eat;
 	int				last_eaten;
+	int				t_eat;
+	int				t_sleep;
+	int				t_think;
 	int				t_die;
+	long			start_time;
 	bool			alive;
 	bool			f1;
 	bool			f2;
@@ -79,16 +83,16 @@ struct s_philo
 
 int		run_threads(t_data *data);
 int		init_structs(t_data *data);
-int		parse_input(t_data *data, int argc, char **argv);
 void	*start_routine(void *d);
 
 /*	Lock functions	*/
 
-bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock);
+bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
+bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock, bool action);
 void	kill_henk(t_philo *henk, pthread_mutex_t *lock);
 void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2);
-void	take_first_fork(t_data *data, t_philo *henk, t_fork *fork);
-void	take_second_fork(t_data *data, t_philo *henk, t_fork *fork);
+void	take_first_fork(t_philo *henk, t_fork *fork);
+void	take_second_fork(t_philo *henk, t_fork *fork);
 
 /*	Monitoring	*/
 
@@ -101,7 +105,9 @@ void	clean_up(t_data *data);
 
 /*	Time and sleep	*/
 
-int		get_runtime(long start_time, pthread_mutex_t *lock);
+int		get_runtime(long start_time);
+long	get_time(void);
+void	ft_sleep(t_philo *henk, long sleep_duration);
 
 
 #endif

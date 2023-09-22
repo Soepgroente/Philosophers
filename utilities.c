@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:48:36 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 13:19:26 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 14:57:22 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ long	get_time(void)
 	return ((long)time.tv_sec * 1000000 + time.tv_usec);
 }
 
-int	get_runtime(long start_time, pthread_mutex_t *lock)
+int	get_runtime(long start_time)
 {
 	int	time;
 	
@@ -35,7 +35,7 @@ void	ft_sleep(t_philo *henk, long sleep_duration)
 
 	timestamp = get_time();
 	goal_time = timestamp + sleep_duration;
-	while (henk->alive == true && timestamp < goal_time)
+	while (timestamp < goal_time && check_if_alive(henk, &henk->lock, NONE) == true)
 	{
 		usleep(200);
 		timestamp = get_time();

@@ -6,25 +6,11 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:22:39 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 13:40:11 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 14:58:49 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static int	end_simulation(t_data *data, pthread_t *threads)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->ph_num)
-	{
-		if (pthread_join(threads[i], NULL) != 0)
-			return (-1);
-		i++;
-	}
-	return (0);
-}
 
 int	run_threads(t_data *data)
 {
@@ -42,8 +28,13 @@ int	run_threads(t_data *data)
 		pthread_create(&threads[i], NULL, &start_routine, (void *) &philos[i]);
 		i++;
 	}
-	data->start_time = get_time();
 	stalk_philos(data);
-	end_simulation(data, threads);
+		i = 0;
+	while (i < data->ph_num)
+	{
+		if (pthread_join(threads[i], NULL) != 0)
+			return (-1);
+		i++;
+	}
 	return (0);
 }
