@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   philo.h                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: vincent <vincent@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/18 12:07:52 by vvan-der      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
+/*   Updated: 2023/09/22 13:40:16 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,48 +32,63 @@
 
 #define INFINITY 1
 
-typedef struct s_philo
+typedef struct s_philo t_philo;
+typedef struct s_data t_data;
+typedef struct s_fork t_fork;
+
+struct s_fork
+{
+	pthread_mutex_t	lock;
+	bool			fork;
+};
+
+struct s_data
+{
+	int				ph_num;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				num_eat;
+	int				num;
+	long			start_time;
+	bool			*forks;
+	bool			ready;
+	int				time;
+	pthread_mutex_t	lock;
+	t_fork			*forks;
+	t_philo			*philos;
+};
+
+struct s_philo
 {
 	int				num;
 	int				num_eaten;
 	int				last_eaten;
+	int				t_die;
 	bool			alive;
-	bool			*left_fork;
-	bool			*right_fork;
-	bool			lf;
-	bool			rf;
+	bool			f1;
+	bool			f2;
 	bool			saturated;
 	pthread_mutex_t	lock;
-}	t_philo;
-
-typedef struct s_data
-{
-	int		ph_num;
-	int		t_die;
-	int		t_eat;
-	int		t_sleep;
-	int		num_eat;
-	int		x;
-	int		num;
-	long	start_time;
-	bool	*forks;
-	bool	ready;
-	int		time;
-	t_philo	*philos;
-}	t_data;
-
-typedef struct s_args
-{
-	t_data	*data_struct;
-	int		num;
-}	t_args;
+	t_fork			*fork1;
+	t_fork			*fork2;
+	t_data			*data;
+};
 
 /*	Initialization */
 
-int		create_threads(t_data *d);
-void	init_philo(t_data *data, t_philo *philo, int x);
+int		run_threads(t_data *data);
+int		init_structs(t_data *data);
 int		parse_input(t_data *data, int argc, char **argv);
 void	*start_routine(void *d);
+
+/*	Lock functions	*/
+
+bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock);
+void	kill_henk(t_philo *henk, pthread_mutex_t *lock);
+void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2);
+void	take_first_fork(t_data *data, t_philo *henk, t_fork *fork);
+void	take_second_fork(t_data *data, t_philo *henk, t_fork *fork);
 
 /*	Monitoring	*/
 
@@ -82,19 +97,11 @@ void	stalk_philos(t_data *data);
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
-void	print_forks(t_data *data, bool *forks);
-
-/*	Eat and think	*/
-
-void	eat_foods(t_data *data, t_philo *henk);
-void	get_forked(t_data *data, t_philo *henk);
-void	take_left_fork(t_data *data, t_philo *henk);
-void	take_right_fork(t_data *data, t_philo *henk);
+void	clean_up(t_data *data);
 
 /*	Time and sleep	*/
 
-long	get_time(void);
-void	ft_sleep(long sleep_duration);
-void	after_dinner_dip(t_data *data, t_philo *henk);
+int		get_runtime(long start_time, pthread_mutex_t *lock);
+
 
 #endif

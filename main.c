@@ -1,67 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: vincent <vincent@student.42.fr>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/18 12:18:04 by vvan-der      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
+/*   Updated: 2023/09/22 13:50:01 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	pull_the_plug(t_data *data)
+static void	kill_everyone(t_data *data)
 {
-	int		i;
-	t_philo	*p;
+	int	i;
 
 	i = 0;
-	p = data->philos;
 	while (i < data->ph_num)
 	{
-		p[i].alive = false;
-		pthread_mutex_destroy(&p[i].lock);
+		kill_henk(&data->philos[i], &data->philos[i].lock);
+		i++;
 	}
 }
 
 void	stalk_philos(t_data *data)
 {
 	int	i;
-	
+	int	time;
+
 	while (INFINITY)
 	{
 		i = 0;
-		data->time = (int)(get_time() - data->start_time) / 1000;
-		if (data->num_eat != 0)
+		time = get_runtime(data->start_time, &data->lock);
+		while (i < data->ph_num)
 		{
-			while (i < data->ph_num)
+			if (check_if_alive(&data->philos[i], &data->philos[i].lock) == false)
 			{
-				if (data->philos[i].saturated == false)
-					break ;
-				i++;
-			}
-			if (i == data->ph_num)
-			{
-				pull_the_plug(data);
+				kill_everyone(data);
+				printf("%d %d has died\n", time, data->philos[i].num);
 				return ;
 			}
 		}
-/* 		i = 0;
-		while (i < data->ph_num)
-		{
-			if (data->time - data->philos[i].last_eaten >= data->t_die)
-			{
-				data->time = (int)(get_time() - data->start_time) / 1000;
-				pull_the_plug(data);
-				printf("%d %d has died\n", data->time, data->philos[i].num);
-				return ;
-			}
-			i++;
-		} */
-		usleep(500);
 	}
+}
+
+static int	parse_input(t_data *data, int argc, char **argv)
+{
+	int	i;
+
+	i = 0;
+	data->ph_num = ft_philatoi(argv[1]);
+	if (data->ph_num == 0)
+		return (printf("Not enough philosophers\n"), -1);
+	data->t_die = ft_philatoi(argv[2]);
+	data->t_eat = ft_philatoi(argv[3]);
+	data->t_sleep = ft_philatoi(argv[4]);
+	if (argc == 6)
+		data->num_eat = ft_philatoi(argv[5]);
+	else
+		data->num_eat = -42;
+	if (data->ph_num == -1 || data->t_die == -1 || data->t_eat == -1 || \
+		data->t_sleep == -1 || data->num_eat == -1)
+		return (-1);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -75,8 +77,20 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (parse_input(&data, argc, argv) == -1)
-		return (1);
+	{
+		clean_up(&data);
+		return (2);
+	}
+	if (init_structs(&data) == -1)
+	{
+		clean_up(&data);
+		return (3);
+	}
 	if (create_threads(&data) == -1)
-		return (1);
+	{
+		clean_up(&data);
+		return (4);
+	}
+	clean_up(&data);
 	return (0);
 }

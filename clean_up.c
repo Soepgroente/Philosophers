@@ -1,12 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   clean_up.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/12 12:18:27 by vvan-der      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   clean_up.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/12 12:18:26 by vvan-der          #+#    #+#             */
+/*   Updated: 2023/09/22 13:47:57 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
+
+static void	free_henks(t_philo *henk, int num)
+{
+	int	i;
+
+	i = 0;
+	while (i < num)
+	{
+		pthread_mutex_destroy(&henk[i].lock);
+		i++;
+		free(henk->fork1);
+		free(henk->fork2);
+	}
+	free(henk);
+	henk = NULL;
+}
+
+static void	free_forks(t_fork *forks, int num)
+{
+	int	i;
+
+	i = 0;
+	while (i < num)
+	{
+		pthread_mutex_destroy(&forks[i].lock);
+		i++;
+	}
+	free(forks);
+	forks = NULL;
+}
+
+void	clean_up(t_data *data)
+{
+	if (data->forks != NULL)
+		free_forks(data, data->ph_num);
+	if (data->philos != NULL)
+		free_henks(data->philos, data->ph_num);
+	free(data->forks);
+	free(data->philos);
+	free(data);
+	data = NULL;
+}
