@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 17:15:39 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 20:34:06 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	stalk_philos(t_data *data)
 	while (INFINITY)
 	{
 		i = 0;
-		// time = get_runtime(data->start_time);
 		while (i < data->ph_num)
 		{
 			if (check_if_alive(&data->philos[i], &data->philos[i].lock, NONE) == false)
@@ -43,7 +42,7 @@ void	stalk_philos(t_data *data)
 				printf("%d %d has died\n", time, i);
 				return ;
 			}
-			if (check_if_saturated(&data->philos[i], &data->philos[i].lock) == true)
+			if (data->num_eat < INT_MAX && check_if_saturated(&data->philos[i], &data->philos[i].lock) == true)
 			{
 				kill_everyone(data);
 				time = get_runtime(data->start_time);
@@ -52,6 +51,7 @@ void	stalk_philos(t_data *data)
 			}
 			i++;
 		}
+		usleep(100);
 	}
 }
 

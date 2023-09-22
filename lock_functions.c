@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:28:03 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 15:56:45 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 21:59:35 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock, bool action)
 {
 	int	time;
 
-	time = get_runtime(henk->start_time);
 	pthread_mutex_lock(lock);
 	if (action == KILL)
 		henk->alive = false;
@@ -38,7 +37,8 @@ bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock, bool action)
 		pthread_mutex_unlock(lock);
 		return (false);
 	}
-	if (henk->t_die < time - henk->last_eaten)
+	time = get_runtime(henk->start_time);
+	if (henk->t_die <= time - henk->last_eaten)
 	{
 		henk->alive = false;
 		pthread_mutex_unlock(lock);

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:48:36 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 14:57:22 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 20:51:24 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ void	ft_sleep(t_philo *henk, long sleep_duration)
 {
 	long	timestamp;
 	long	goal_time;
+	int		zzz;
 
 	timestamp = get_time();
+	zzz = sleep_duration / 500;
 	goal_time = timestamp + sleep_duration;
 	while (timestamp < goal_time && check_if_alive(henk, &henk->lock, NONE) == true)
 	{
-		usleep(200);
+		usleep(zzz);
 		timestamp = get_time();
 	}
 }

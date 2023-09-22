@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:18:22 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 17:13:09 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 20:53:00 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	reconsider_life_choices(t_philo *henk)
 			return ;
 	time = get_runtime(henk->start_time);
 	printf("%d %d is thinking\n", time, henk->num);
-	ft_sleep(henk, henk->t_think);
+	// ft_sleep(henk, henk->t_think);
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *henk)
@@ -39,9 +39,9 @@ static void	eat_foods(t_philo *henk)
 {
 	int	time;
 
+	time = get_runtime(henk->start_time);
 	if (check_if_alive(henk, &henk->lock, NONE) == false)
 		return ;
-	time = get_runtime(henk->start_time);
 	printf("%d %d is eating\n", time, henk->num);
 	pthread_mutex_lock(&henk->lock);
 	henk->last_eaten = time;
@@ -73,7 +73,7 @@ void	*start_routine(void *input)
 
 	henk = (t_philo *) input;
 	if (henk->num % 2 == 1)
-		usleep(100);
+		usleep(1000);
 	eat_sleep_repeat(henk->data, henk);
 	return (NULL);
 }
