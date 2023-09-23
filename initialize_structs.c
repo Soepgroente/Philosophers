@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:14:57 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 20:52:57 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/23 11:14:13 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->last_eaten = 0;
 	henk->max_eat = data->num_eat;
 	henk->t_eat = data->t_eat;
-	henk->t_sleep = data->t_sleep;
 	henk->t_die = data->t_die;
 	henk->start_time = data->start_time;
 	henk->alive = true;
@@ -27,10 +26,20 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->f2 = false;
 	henk->saturated = false;
 	henk->data = data;
-	if (henk->t_eat > henk->t_sleep)
-		henk->t_think = henk->t_sleep / 2;
+}
+
+static void	norm_splitting(t_philo *henk, t_fork *forks, int i)
+{
+	if (i % 2 == 0)
+	{
+		henk[i].fork1 = &forks[i - 1];
+		henk[i].fork2 = &forks[i];
+	}
 	else
-		henk->t_think = henk->t_eat / 2;
+	{
+		henk[i].fork1 = &forks[i];
+		henk[i].fork2 = &forks[i - 1];
+	}
 }
 
 static int	init_philos(t_data *data, t_fork *forks)
@@ -48,16 +57,7 @@ static int	init_philos(t_data *data, t_fork *forks)
 		henk_data(data, &henk[i], i);
 		if (pthread_mutex_init(&henk[i].lock, NULL) != 0)
 			return (-1);
-		if (i % 2 == 0)
-		{
-			henk[i].fork1 = &forks[i - 1];
-			henk[i].fork2 = &forks[i];
-		}
-		else
-		{
-			henk[i].fork1 = &forks[i];
-			henk[i].fork2 = &forks[i - 1];
-		}
+		norm_splitting(henk, forks, i);
 		i++;
 	}
 	henk[0].fork1 = &forks[i - 1];
@@ -66,7 +66,7 @@ static int	init_philos(t_data *data, t_fork *forks)
 
 static int	init_mutex_s(t_data *data)
 {
-	int	i;
+	int		i;
 	t_fork	*forks;
 
 	i = 0;
@@ -81,6 +81,8 @@ static int	init_mutex_s(t_data *data)
 			return (-1);
 		i++;
 	}
+	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
+		return (-1);
 	return (0);
 }
 

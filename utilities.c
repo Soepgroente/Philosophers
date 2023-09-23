@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 14:48:36 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 20:51:24 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/23 11:12:13 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	get_time(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return ((long)time.tv_sec * 1000000 + time.tv_usec);
@@ -23,38 +23,28 @@ long	get_time(void)
 int	get_runtime(long start_time)
 {
 	int	time;
-	
-	time = (int) (get_time() - start_time) / 1000;
+
+	time = (int)(get_time() - start_time) / 1000;
 	return (time);
 }
 
 void	ft_sleep(t_philo *henk, long sleep_duration)
 {
 	long	timestamp;
-	long	goal_time;
-	int		zzz;
+	long	goal;
 
 	timestamp = get_time();
-	zzz = sleep_duration / 500;
-	goal_time = timestamp + sleep_duration;
-	while (timestamp < goal_time && check_if_alive(henk, &henk->lock, NONE) == true)
+	goal = timestamp + sleep_duration;
+	while (timestamp < goal && poke_henk(henk, &henk->lock, NONE) == true)
 	{
-		usleep(zzz);
+		usleep(500);
 		timestamp = get_time();
 	}
 }
 
-void	print_forks(t_data *data, bool *forks)
+void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->ph_num)
-	{
-		if (forks[i] == false)
-			printf("[%d] available\n", i);
-		else
-			printf("[%d] taken\n", i);
-		i++;
-	}
+	pthread_mutex_lock(lock);
+	printf("%d %d %s", get_runtime(henk->start_time), henk->num, msg);
+	pthread_mutex_unlock(lock);
 }

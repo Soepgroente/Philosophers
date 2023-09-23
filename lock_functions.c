@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:28:03 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 21:59:35 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/23 11:05:27 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock)
 	return (saturated);
 }
 
-bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock, bool action)
+bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 {
 	int	time;
 
@@ -65,44 +65,36 @@ void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2)
 
 void	take_first_fork(t_philo *henk, t_fork *fork)
 {
-	int	time;
-
-	time = 0;
 	while (henk->f1 == false)
 	{
-		if (check_if_alive(henk, &henk->lock, NONE) == false)
+		if (poke_henk(henk, &henk->lock, NONE) == false)
 			return ;
 		pthread_mutex_lock(&fork->lock);
 		if (fork->fork == AVAILABLE)
 		{
 			henk->fork1->fork = TAKEN;
 			henk->f1 = true;
-			time = get_runtime(henk->start_time);
-			printf("%d %d has taken a fork\n", time, henk->num);
+			print_message(henk, &henk->data->print_lock, "has taken a fork\n");
 		}
 		pthread_mutex_unlock(&fork->lock);
-		usleep(100);
+		usleep(200);
 	}
 }
 
 void	take_second_fork(t_philo *henk, t_fork *fork)
 {
-	int	time;
-
-	time = 0;
 	while (henk->f2 == false)
 	{
-		if (check_if_alive(henk, &henk->lock, NONE) == false)
+		if (poke_henk(henk, &henk->lock, NONE) == false)
 			return ;
 		pthread_mutex_lock(&fork->lock);
 		if (fork->fork == AVAILABLE)
 		{
 			henk->fork2->fork = TAKEN;
 			henk->f2 = true;
-			time = get_runtime(henk->start_time);
-			printf("%d %d has taken a fork\n", time, henk->num);
+			print_message(henk, &henk->data->print_lock, "has taken a fork\n");
 		}
 		pthread_mutex_unlock(&fork->lock);
-		usleep(100);
+		usleep(200);
 	}
 }

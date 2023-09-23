@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 17:10:54 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/23 11:03:43 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@
 # include <errno.h>
 # include <sys/time.h>
 
-#define AVAILABLE 0
-#define TAKEN 1
+# define AVAILABLE 0
+# define TAKEN 1
 
-#define NONE 0
-#define KILL 1
+# define NONE 0
+# define KILL 1
 
-#define INFINITY 1
+# define INFINITY 1
 
-typedef struct s_philo t_philo;
-typedef struct s_data t_data;
-typedef struct s_fork t_fork;
+typedef struct s_philo	t_philo;
+typedef struct s_data	t_data;
+typedef struct s_fork	t_fork;
 
 struct s_fork
 {
@@ -54,6 +54,7 @@ struct s_data
 	bool			ready;
 	int				time;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	print_lock;
 	t_fork			*forks;
 	t_philo			*philos;
 };
@@ -65,7 +66,6 @@ struct s_philo
 	int				max_eat;
 	int				last_eaten;
 	int				t_eat;
-	int				t_sleep;
 	int				t_think;
 	int				t_die;
 	long			start_time;
@@ -88,26 +88,25 @@ void	*start_routine(void *d);
 /*	Lock functions	*/
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
-bool	check_if_alive(t_philo *henk, pthread_mutex_t *lock, bool action);
-void	kill_henk(t_philo *henk, pthread_mutex_t *lock);
+bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action);
 void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2);
 void	take_first_fork(t_philo *henk, t_fork *fork);
 void	take_second_fork(t_philo *henk, t_fork *fork);
 
 /*	Monitoring	*/
 
-void	stalk_philos(t_data *data);
+void	stalk_philos(t_data *d);
 
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
 void	clean_up(t_data *data);
+void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 
 /*	Time and sleep	*/
 
 int		get_runtime(long start_time);
 long	get_time(void);
 void	ft_sleep(t_philo *henk, long sleep_duration);
-
 
 #endif

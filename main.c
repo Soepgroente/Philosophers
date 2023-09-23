@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 20:34:06 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 23:37:01 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,32 @@ static void	kill_everyone(t_data *data)
 	i = 0;
 	while (i < data->ph_num)
 	{
-		check_if_alive(&data->philos[i], &data->philos[i].lock, KILL);
+		poke_henk(&data->philos[i], &data->philos[i].lock, KILL);
 		i++;
 	}
 }
 
-void	stalk_philos(t_data *data)
+void	stalk_philos(t_data *d)
 {
 	int	i;
-	int	time;
 
 	while (INFINITY)
 	{
 		i = 0;
-		while (i < data->ph_num)
+		while (i < d->ph_num)
 		{
-			if (check_if_alive(&data->philos[i], &data->philos[i].lock, NONE) == false)
+			if (poke_henk(&d->philos[i], &d->philos[i].lock, NONE) == false)
 			{
-				kill_everyone(data);
+				kill_everyone(d);
 				usleep(1000);
-				time = get_runtime(data->start_time);
-				printf("%d %d has died\n", time, i);
+				printf("%d %d has died\n", get_runtime(d->start_time), i);
 				return ;
 			}
-			if (data->num_eat < INT_MAX && check_if_saturated(&data->philos[i], &data->philos[i].lock) == true)
+			if (d->num_eat < INT_MAX && \
+			check_if_saturated(&d->philos[i], &d->philos[i].lock) == true)
 			{
-				kill_everyone(data);
-				time = get_runtime(data->start_time);
-				printf("Number of times eaten: %d\n", data->philos[i].num_eaten);
+				kill_everyone(d);
+				printf("Number of times eaten: %d\n", d->philos[i].num_eaten);
 				return ;
 			}
 			i++;
@@ -100,6 +98,6 @@ int	main(int argc, char **argv)
 		clean_up(&data);
 		return (4);
 	}
-	// clean_up(&data);
+	clean_up(&data);
 	return (0);
 }

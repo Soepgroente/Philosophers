@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:18:22 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 20:53:00 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/23 11:05:52 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,27 @@
 
 static void	reconsider_life_choices(t_philo *henk)
 {
-	int	time;
-
-	if (check_if_alive(henk, &henk->lock, NONE) == false)
-			return ;
-	time = get_runtime(henk->start_time);
-	printf("%d %d is thinking\n", time, henk->num);
-	// ft_sleep(henk, henk->t_think);
+	if (poke_henk(henk, &henk->lock, NONE) == false)
+		return ;
+	print_message(henk, &henk->data->print_lock, "is thinking\n");
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *henk)
 {
-	int	time;
-
-	time = get_runtime(henk->start_time);
-	if (check_if_alive(henk, &henk->lock, NONE) == true)
+	if (poke_henk(henk, &henk->lock, NONE) == true)
 	{
-		printf("%d %d is sleeping\n", time, henk->num);
+		print_message(henk, &henk->data->print_lock, "is sleeping\n");
 		ft_sleep(henk, data->t_sleep * 1000);
 	}
 }
 
 static void	eat_foods(t_philo *henk)
 {
-	int	time;
-
-	time = get_runtime(henk->start_time);
-	if (check_if_alive(henk, &henk->lock, NONE) == false)
+	if (poke_henk(henk, &henk->lock, NONE) == false)
 		return ;
-	printf("%d %d is eating\n", time, henk->num);
+	print_message(henk, &henk->data->print_lock, "is eating\n");
 	pthread_mutex_lock(&henk->lock);
-	henk->last_eaten = time;
+	henk->last_eaten = get_runtime(henk->start_time);
 	henk->num_eaten++;
 	if (henk->num_eaten >= henk->max_eat)
 		henk->saturated = true;
@@ -57,7 +47,7 @@ static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 {
 	while (INFINITY)
 	{
-		if (check_if_alive(henk, &henk->lock, NONE) == false)
+		if (poke_henk(henk, &henk->lock, NONE) == false)
 			return ;
 		take_first_fork(henk, henk->fork1);
 		take_second_fork(henk, henk->fork2);

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:22:39 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 14:58:49 by vincent          ###   ########.fr       */
+/*   Updated: 2023/09/22 23:21:02 by vincent          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	run_threads(t_data *data)
 	pthread_t	*threads;
 	t_philo		*philos;
 	int			i;
-	
+
 	i = 0;
 	philos = data->philos;
 	threads = malloc((data->ph_num) * sizeof(pthread_t));
@@ -29,7 +29,7 @@ int	run_threads(t_data *data)
 		i++;
 	}
 	stalk_philos(data);
-		i = 0;
+	i = 0;
 	while (i < data->ph_num)
 	{
 		if (pthread_join(threads[i], NULL) != 0)

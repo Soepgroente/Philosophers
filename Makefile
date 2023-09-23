@@ -6,14 +6,14 @@
 #    By: vincent <vincent@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/02 13:49:49 by vincent           #+#    #+#              #
-#    Updated: 2023/09/22 17:40:20 by vincent          ###   ########.fr        #
+#    Updated: 2023/09/23 11:07:08 by vincent          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
 CC		= gcc
 RM		= rm -rf
-CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast #-g -fsanitize=thread 
+CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast #-g -fsanitize=thread
 OBJDIR	= Philobjects
 
 SRCS	= 	clean_up.c \
