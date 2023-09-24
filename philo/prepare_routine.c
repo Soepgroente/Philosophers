@@ -23,9 +23,12 @@ int	run_threads(t_data *data)
 	threads = malloc((data->ph_num) * sizeof(pthread_t));
 	if (threads == NULL)
 		return (-1);
+	data->start_time = get_time();
 	while (i < data->ph_num)
 	{
-		pthread_create(&threads[i], NULL, &start_routine, (void *) &philos[i]);
+		philos[i].start_time = data->start_time;
+		if (pthread_create(&threads[i], NULL, &start_routine, &philos[i]) != 0)
+			return (-1);
 		i++;
 	}
 	stalk_philos(data);

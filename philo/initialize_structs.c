@@ -20,7 +20,6 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->max_eat = data->num_eat;
 	henk->t_eat = data->t_eat;
 	henk->t_die = data->t_die;
-	henk->start_time = data->start_time;
 	henk->alive = true;
 	henk->f1 = false;
 	henk->f2 = false;

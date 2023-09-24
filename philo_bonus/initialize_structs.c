@@ -22,27 +22,12 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->t_die = data->t_die;
 	henk->start_time = data->start_time;
 	henk->alive = true;
-	henk->f1 = false;
-	henk->f2 = false;
 	henk->saturated = false;
 	henk->data = data;
+	henk->forks = data->forks;
 }
 
-static void	norm_splitting(t_philo *henk, t_fork *forks, int i)
-{
-	if (i % 2 == 0)
-	{
-		henk[i].fork1 = &forks[i - 1];
-		henk[i].fork2 = &forks[i];
-	}
-	else
-	{
-		henk[i].fork1 = &forks[i];
-		henk[i].fork2 = &forks[i - 1];
-	}
-}
-
-static int	init_philos(t_data *data, t_fork *forks)
+static int	init_philos(t_data *data)
 {
 	int		i;
 	t_philo	*henk;
@@ -55,45 +40,28 @@ static int	init_philos(t_data *data, t_fork *forks)
 	while (i < data->ph_num)
 	{
 		henk_data(data, &henk[i], i);
-		if (pthread_mutex_init(&henk[i].lock, NULL) != 0)
-			return (-1);
-		norm_splitting(henk, forks, i);
 		i++;
 	}
-	henk[0].fork1 = &forks[i - 1];
 	return (0);
 }
 
-static int	init_mutex_s(t_data *data)
+sem_t	*init_semaphore(t_data *data)
 {
-	int		i;
-	t_fork	*forks;
+	sem_t	*forks;
 
-	i = 0;
-	forks = malloc(data->ph_num * sizeof(t_fork));
+	forks = sem_open("Forkblocker", O_CREAT, "rw", data->ph_num / 2);
 	if (forks == NULL)
-		return (-1);
-	data->forks = forks;
-	while (i < data->ph_num)
-	{
-		forks[i].fork = AVAILABLE;
-		if (pthread_mutex_init(&forks[i].lock, NULL) != 0)
-			return (-1);
-		i++;
-	}
-	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
-		return (-1);
-	return (0);
+		return (NULL);
+	return (forks);
 }
 
 int	init_structs(t_data *data)
 {
+	data->forks = init_semaphore(data);
+	if (data->forks == NULL)
+		return (-1);
+	if (init_philos(data) == -1)
+		return (-1);
 	data->start_time = get_time();
-	if (init_mutex_s(data) == -1)
-		return (-1);
-	if (init_philos(data, data->forks) == -1)
-		return (-1);
-	if (pthread_mutex_init(&data->lock, NULL) != 0)
-		return (-1);
 	return (0);
 }

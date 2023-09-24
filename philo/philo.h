@@ -51,8 +51,6 @@ struct s_data
 	int				num_eat;
 	int				num;
 	long			start_time;
-	bool			ready;
-	int				time;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	print_lock;
 	t_fork			*forks;

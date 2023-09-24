@@ -25,7 +25,8 @@ int	run_threads(t_data *data)
 		return (-1);
 	while (i < data->ph_num)
 	{
-		pthread_create(&threads[i], NULL, &start_routine, (void *) &philos[i]);
+		if (pthread_create(&threads[i], NULL, &start_routine, &philos[i]) != 0)
+			return (-1);
 		i++;
 	}
 	stalk_philos(data);

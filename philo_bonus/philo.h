@@ -23,6 +23,7 @@
 # include <pthread.h>
 # include <errno.h>
 # include <sys/time.h>
+# include <semaphore.h>
 
 # define AVAILABLE 0
 # define TAKEN 1
@@ -34,13 +35,6 @@
 
 typedef struct s_philo	t_philo;
 typedef struct s_data	t_data;
-typedef struct s_fork	t_fork;
-
-struct s_fork
-{
-	pthread_mutex_t	lock;
-	bool			fork;
-};
 
 struct s_data
 {
@@ -51,11 +45,7 @@ struct s_data
 	int				num_eat;
 	int				num;
 	long			start_time;
-	bool			ready;
-	int				time;
-	pthread_mutex_t	lock;
-	pthread_mutex_t	print_lock;
-	t_fork			*forks;
+	sem_t			*forks;
 	t_philo			*philos;
 };
 
@@ -70,18 +60,15 @@ struct s_philo
 	int				t_die;
 	long			start_time;
 	bool			alive;
-	bool			f1;
-	bool			f2;
 	bool			saturated;
-	pthread_mutex_t	lock;
-	t_fork			*fork1;
-	t_fork			*fork2;
+	sem_t			*forks;
 	t_data			*data;
 };
 
 /*	Initialization */
 
 int		run_threads(t_data *data);
+sem_t	*init_semaphore(t_data *data);
 int		init_structs(t_data *data);
 void	*start_routine(void *d);
 
@@ -89,9 +76,6 @@ void	*start_routine(void *d);
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
 bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action);
-void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2);
-void	take_first_fork(t_philo *henk, t_fork *fork);
-void	take_second_fork(t_philo *henk, t_fork *fork);
 
 /*	Monitoring	*/
 

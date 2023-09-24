@@ -14,48 +14,16 @@
 
 static void	kill_everyone(t_data *data)
 {
-	int	i;
 
-	i = 0;
-	while (i < data->ph_num)
-	{
-		poke_henk(&data->philos[i], &data->philos[i].lock, KILL);
-		i++;
-	}
 }
 
 void	stalk_philos(t_data *d)
 {
-	int	i;
 
-	while (INFINITY)
-	{
-		i = 0;
-		while (i < d->ph_num)
-		{
-			if (poke_henk(&d->philos[i], &d->philos[i].lock, NONE) == false)
-			{
-				kill_everyone(d);
-				usleep(1000);
-				printf("%d %d has died\n", get_runtime(d->start_time), i);
-				return ;
-			}
-			if (d->num_eat < INT_MAX && \
-			check_if_saturated(&d->philos[i], &d->philos[i].lock) == true)
-			{
-				kill_everyone(d);
-				printf("Number of times eaten: %d\n", d->philos[i].num_eaten);
-				return ;
-			}
-			i++;
-		}
-		usleep(100);
-	}
 }
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
-	data->forks = NULL;
 	data->philos = NULL;
 	data->ph_num = ft_philatoi(argv[1]);
 	if (data->ph_num == 0)
