@@ -6,21 +6,53 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/24 20:01:14 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/24 22:05:54 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-/* static void	kill_everyone(t_data *data)
+static void	kill_everyone(t_data *data)
 {
+	int	i;
 
+	i = 0;
+	while (i < data->ph_num)
+	{
+		poke_henk(&data->philos[i], (&data->philos[i])->lock, KILL);
+		i++;
+	}
 }
 
 void	stalk_philos(t_data *d)
 {
+	int	i;
 
-} */
+	while (INFINITY)
+	{
+		i = 0;
+		while (i < d->ph_num)
+		{
+			if (poke_henk(&d->philos[i], (&d->philos[i])->lock, NONE) == false || \
+			check_last_eaten(&d->philos[i], (&d->philos[i])->eat, false) == false)
+			{
+				kill_everyone(d);
+				usleep(1000);
+				printf("%d %d has died\n", get_runtime(d->start_time), i);
+				return ;
+			}
+			if (d->num_eat < INT_MAX && \
+			check_if_saturated(&d->philos[i], (&d->philos[i])->eat2, false) == true)
+			{
+				kill_everyone(d);
+				printf("Number of times eaten: %d\n", d->philos[i].num_eaten);
+				return ;
+			}
+			i++;
+		}
+		usleep(100);
+	}
+}
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {

@@ -63,6 +63,8 @@ struct s_philo
 	long	start_time;
 	bool	alive;
 	bool	saturated;
+	sem_t	*eat;
+	sem_t	*eat2;
 	sem_t	*forks;
 	sem_t	*print;
 	sem_t	*lock;
@@ -77,7 +79,8 @@ void	*start_routine(void *d);
 
 /*	Lock functions	*/
 
-bool	check_if_saturated(t_philo *henk);
+bool	check_last_eaten(t_philo *henk, sem_t *lock, bool eaten);
+bool	check_if_saturated(t_philo *henk, sem_t *lock, bool eaten);
 bool	poke_henk(t_philo *henk, sem_t *lock, bool action);
 
 /*	Monitoring	*/

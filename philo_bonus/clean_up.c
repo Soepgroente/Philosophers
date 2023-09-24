@@ -6,17 +6,31 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/24 20:01:14 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/24 21:08:59 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
+static void	free_henks(t_philo *henk, int num)
+{
+	int	i;
+
+	i = 0;
+	while (i < num)
+	{
+		sem_close(henk[i].lock);
+		i++;
+	}
+	free(henk);
+	henk = NULL;
+}
+
 void	clean_up(t_data *data)
 {
 	if (data->philos != NULL)
 	{
-		free(data->philos);
+		free_henks(data->philos, data->ph_num);
 		data->philos = NULL;
 	}
 	if (data->forks != NULL)
@@ -24,4 +38,14 @@ void	clean_up(t_data *data)
 		sem_close(data->forks);
 		data->forks = NULL;
 	}
+	if (data->print != NULL)
+	{
+		sem_close(data->print);
+		data->print = NULL;
+	}
+	/* if (data->forks != NULL)
+	{
+		sem_close(data->forks);
+		data->forks = NULL;
+	} */
 }

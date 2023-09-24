@@ -6,14 +6,14 @@
 #    By: vincent <vincent@student.42.fr>              +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
-#    Updated: 2023/09/24 20:29:19 by vincent       ########   odam.nl          #
+#    Updated: 2023/09/24 22:15:16 by vincent       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo_bonus
 CC		= gcc
 RM		= rm -rf
-CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast -g -fsanitize=address
+CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast -g -fsanitize=thread
 OBJDIR	= Philobjects
 
 SRCS	= 	clean_up.c \

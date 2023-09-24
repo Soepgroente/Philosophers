@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/24 20:11:21 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/24 22:11:03 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	run_threads(t_data *data, t_philo *philos)
 			return (-1);
 		i++;
 	}
-	// stalk_philos(data);
+	stalk_philos(data);
 	i = 0;
 	while (i < data->ph_num)
 	{
