@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   prepare_routine.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/22 12:22:39 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 23:21:02 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   prepare_routine.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/24 20:11:21 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-int	run_threads(t_data *data)
+int	run_threads(t_data *data, t_philo *philos)
 {
 	pthread_t	*threads;
-	t_philo		*philos;
 	int			i;
 
 	i = 0;
-	philos = data->philos;
 	threads = malloc((data->ph_num) * sizeof(pthread_t));
 	if (threads == NULL)
 		return (-1);
@@ -29,7 +27,7 @@ int	run_threads(t_data *data)
 			return (-1);
 		i++;
 	}
-	stalk_philos(data);
+	// stalk_philos(data);
 	i = 0;
 	while (i < data->ph_num)
 	{

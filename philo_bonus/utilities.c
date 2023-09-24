@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utilities.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 14:48:36 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/23 11:12:13 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utilities.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/24 20:03:34 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 long	get_time(void)
 {
@@ -33,18 +33,12 @@ void	ft_sleep(t_philo *henk, long sleep_duration)
 	long	timestamp;
 	long	goal;
 
+	(void)henk;
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
-	while (timestamp < goal && poke_henk(henk, &henk->lock, NONE) == true)
+	while (timestamp < goal)
 	{
 		usleep(500);
 		timestamp = get_time();
 	}
-}
-
-void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg)
-{
-	pthread_mutex_lock(lock);
-	printf("%d %d %s", get_runtime(henk->start_time), henk->num, msg);
-	pthread_mutex_unlock(lock);
 }

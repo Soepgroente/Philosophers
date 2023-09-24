@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 23:37:01 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/24 20:01:14 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-static void	kill_everyone(t_data *data)
+/* static void	kill_everyone(t_data *data)
 {
 
 }
@@ -20,7 +20,7 @@ static void	kill_everyone(t_data *data)
 void	stalk_philos(t_data *d)
 {
 
-}
+} */
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 		clean_up(&data);
 		return (3);
 	}
-	if (run_threads(&data) == -1)
+	if (run_threads(&data, data.philos) == -1)
 	{
 		clean_up(&data);
 		return (4);

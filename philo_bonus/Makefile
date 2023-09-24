@@ -1,26 +1,27 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: vincent <vincent@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/02 13:49:49 by vincent           #+#    #+#              #
-#    Updated: 2023/09/23 11:07:08 by vincent          ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: vincent <vincent@student.42.fr>              +#+                      #
+#                                                    +#+                       #
+#    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
+#    Updated: 2023/09/24 20:29:19 by vincent       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= philo
+NAME	= philo_bonus
 CC		= gcc
 RM		= rm -rf
-CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast #-g -fsanitize=thread
+CFLAGS	= -Wextra -Wall -Werror -pthread -Ofast -g -fsanitize=address
 OBJDIR	= Philobjects
 
 SRCS	= 	clean_up.c \
 			initialize_structs.c \
 			lock_functions.c \
 			main.c \
-			philatoi.c \
+			ft_philatoi.c \
+			ft_philitoa.c \
 			prepare_routine.c \
 			routine.c \
 			utilities.c

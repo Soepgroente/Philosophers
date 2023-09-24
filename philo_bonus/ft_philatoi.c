@@ -6,11 +6,11 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/06 16:50:51 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/11 15:13:46 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/24 20:01:14 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 static bool	ft_isdigit(char num)
 {

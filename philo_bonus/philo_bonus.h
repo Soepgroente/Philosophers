@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <stdio.h>
 # include <stdbool.h>
@@ -23,6 +23,7 @@
 # include <pthread.h>
 # include <errno.h>
 # include <sys/time.h>
+# include <sys/stat.h>
 # include <semaphore.h>
 
 # define AVAILABLE 0
@@ -38,44 +39,46 @@ typedef struct s_data	t_data;
 
 struct s_data
 {
-	int				ph_num;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
-	int				num_eat;
-	int				num;
-	long			start_time;
-	sem_t			*forks;
-	t_philo			*philos;
+	int		ph_num;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	int		num_eat;
+	int		num;
+	long	start_time;
+	sem_t	*forks;
+	sem_t	*print;
+	t_philo	*philos;
 };
 
 struct s_philo
 {
-	int				num;
-	int				num_eaten;
-	int				max_eat;
-	int				last_eaten;
-	int				t_eat;
-	int				t_think;
-	int				t_die;
-	long			start_time;
-	bool			alive;
-	bool			saturated;
-	sem_t			*forks;
-	t_data			*data;
+	int		num;
+	int		num_eaten;
+	int		max_eat;
+	int		last_eaten;
+	int		t_eat;
+	int		t_think;
+	int		t_die;
+	long	start_time;
+	bool	alive;
+	bool	saturated;
+	sem_t	*forks;
+	sem_t	*print;
+	sem_t	*lock;
+	t_data	*data;
 };
 
 /*	Initialization */
 
-int		run_threads(t_data *data);
-sem_t	*init_semaphore(t_data *data);
+int		run_threads(t_data *data, t_philo *philos);
 int		init_structs(t_data *data);
 void	*start_routine(void *d);
 
 /*	Lock functions	*/
 
-bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
-bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action);
+bool	check_if_saturated(t_philo *henk);
+bool	poke_henk(t_philo *henk, sem_t *lock, bool action);
 
 /*	Monitoring	*/
 
@@ -84,8 +87,9 @@ void	stalk_philos(t_data *d);
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
+char	*ft_philitoa(int n);
 void	clean_up(t_data *data);
-void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
+void	print_message(t_philo *henk, char *msg);
 
 /*	Time and sleep	*/
 
