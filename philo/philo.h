@@ -79,7 +79,7 @@ struct s_philo
 
 /*	Initialization */
 
-int		run_threads(t_data *data);
+int		run_threads(t_data *data, t_philo *philos);
 int		init_structs(t_data *data);
 void	*start_routine(void *d);
 

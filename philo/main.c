@@ -93,7 +93,7 @@ int	main(int argc, char **argv)
 		clean_up(&data);
 		return (3);
 	}
-	if (run_threads(&data) == -1)
+	if (run_threads(&data, data.philos) == -1)
 	{
 		clean_up(&data);
 		return (4);

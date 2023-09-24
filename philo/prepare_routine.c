@@ -12,14 +12,12 @@
 
 #include "philo.h"
 
-int	run_threads(t_data *data)
+int	run_threads(t_data *data, t_philo *philos)
 {
 	pthread_t	*threads;
-	t_philo		*philos;
 	int			i;
 
 	i = 0;
-	philos = data->philos;
 	threads = malloc((data->ph_num) * sizeof(pthread_t));
 	if (threads == NULL)
 		return (-1);
