@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 12:18:22 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/23 11:05:52 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   routine.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	eat_foods(t_philo *henk)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is eating\n");
 	pthread_mutex_lock(&henk->lock);
-	henk->last_eaten = get_runtime(henk->start_time);
+	henk->last_eaten = get_runtime(henk->t_start);
 	henk->num_eaten++;
 	if (henk->num_eaten >= henk->max_eat)
 		henk->saturated = true;

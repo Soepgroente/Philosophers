@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/24 22:05:54 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/25 12:28:54 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,34 @@ static void	kill_everyone(t_data *data)
 	}
 }
 
+static void	just_for_norm(t_data *data, int i)
+{
+	kill_everyone(data);
+	usleep(1000);
+	printf("# of times eaten: %d\n", data->philos[i].num_eaten);
+}
+
 void	stalk_philos(t_data *d)
 {
-	int	i;
-
 	while (INFINITY)
 	{
-		i = 0;
-		while (i < d->ph_num)
+		d->i = 0;
+		while (d->i < d->ph_num)
 		{
-			if (poke_henk(&d->philos[i], (&d->philos[i])->lock, NONE) == false || \
-			check_last_eaten(&d->philos[i], (&d->philos[i])->eat, false) == false)
+			if (poke_henk(&d->philos[d->i], \
+			(&d->philos[d->i])->lock, NONE) == false || check_last_eaten \
+			(&d->philos[d->i], (&d->philos[d->i])->eat, false) == false)
 			{
 				kill_everyone(d);
 				usleep(1000);
-				printf("%d %d has died\n", get_runtime(d->start_time), i);
+				printf("%d %d has died\n", get_runtime(d->t_start), \
+				(&d->philos[d->i])->num);
 				return ;
 			}
-			if (d->num_eat < INT_MAX && \
-			check_if_saturated(&d->philos[i], (&d->philos[i])->eat2, false) == true)
-			{
-				kill_everyone(d);
-				printf("Number of times eaten: %d\n", d->philos[i].num_eaten);
-				return ;
-			}
-			i++;
+			if (d->num_eat < INT_MAX && check_if_saturated(&d->philos[d->i], \
+			(&d->philos[d->i])->eat2, false) == true)
+				return (just_for_norm(d, d->i));
+			d->i++;
 		}
 		usleep(100);
 	}

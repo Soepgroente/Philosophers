@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 13:49:57 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 23:37:01 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	stalk_philos(t_data *d)
 			{
 				kill_everyone(d);
 				usleep(1000);
-				printf("%d %d has died\n", get_runtime(d->start_time), i);
+				printf("%d %d has died\n", get_runtime(d->t_start), i);
 				return ;
 			}
 			if (d->num_eat < INT_MAX && \

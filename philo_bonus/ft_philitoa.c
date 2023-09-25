@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/24 19:59:58 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/24 20:16:32 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/25 11:04:21 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_philitoa(int n)
 	{
 		res[2] = (n % 10) + '0';
 		n /= 10;
-	}		
+	}
 	else
 		res[2] = '\0';
 	if (n > 9)

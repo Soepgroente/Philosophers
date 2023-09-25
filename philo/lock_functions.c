@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lock_functions.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 16:28:03 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/23 11:05:27 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   lock_functions.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 		pthread_mutex_unlock(lock);
 		return (false);
 	}
-	if (henk->t_die <= get_runtime(henk->start_time) - henk->last_eaten)
+	if (henk->t_die <= get_runtime(henk->t_start) - henk->last_eaten)
 	{
 		henk->alive = false;
 		pthread_mutex_unlock(lock);

@@ -6,11 +6,27 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/24 22:11:07 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static void	henk_data2(t_data *data, t_philo *p, int num)
+{
+	p->num = num;
+	p->num_eaten = 0;
+	p->last_eaten = 0;
+	p->max_eat = data->num_eat;
+	p->t_eat = data->t_eat;
+	p->t_die = data->t_die;
+	p->t_start = data->t_start;
+	p->alive = true;
+	p->saturated = false;
+	p->data = data;
+	p->forks = data->forks;
+	p->print = data->print;
+}
 
 static int	henk_data(t_data *data, t_philo *p, int num)
 {
@@ -18,18 +34,6 @@ static int	henk_data(t_data *data, t_philo *p, int num)
 	char	*str2;
 	char	*str3;
 
-	p->num = num;
-	p->num_eaten = 0;
-	p->last_eaten = 0;
-	p->max_eat = data->num_eat;
-	p->t_eat = data->t_eat;
-	p->t_die = data->t_die;
-	p->start_time = data->start_time;
-	p->alive = true;
-	p->saturated = false;
-	p->data = data;
-	p->forks = data->forks;
-	p->print = data->print;
 	str1 = ft_philitoa(p->num);
 	str2 = ft_philitoa(p->num + data->ph_num);
 	str3 = ft_philitoa(p->num + data->ph_num * 2);
@@ -41,6 +45,7 @@ static int	henk_data(t_data *data, t_philo *p, int num)
 	p->eat2 = sem_open(str2, O_CREAT, 0644, 1);
 	if (p->lock == SEM_FAILED || p->eat == SEM_FAILED || p->eat2 == SEM_FAILED)
 		return (-1);
+	henk_data2(data, p, num);
 	return (0);
 }
 
@@ -78,7 +83,7 @@ int	init_structs(t_data *data)
 {
 	if (init_semaphores(data) == -1)
 		return (-1);
-	data->start_time = get_time();
+	data->t_start = get_time();
 	if (init_philos(data) == -1)
 		return (-1);
 	return (0);

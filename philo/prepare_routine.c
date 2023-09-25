@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   prepare_routine.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/22 12:22:39 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/22 23:21:02 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   prepare_routine.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	run_threads(t_data *data, t_philo *philos)
 	threads = malloc((data->ph_num) * sizeof(pthread_t));
 	if (threads == NULL)
 		return (-1);
-	data->start_time = get_time();
+	data->t_start = get_time();
 	while (i < data->ph_num)
 	{
-		philos[i].start_time = data->start_time;
+		philos[i].t_start = data->t_start;
 		if (pthread_create(&threads[i], NULL, &start_routine, &philos[i]) != 0)
 			return (-1);
 		i++;

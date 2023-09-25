@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/24 21:08:59 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/25 11:04:00 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,4 @@ void	clean_up(t_data *data)
 		sem_close(data->print);
 		data->print = NULL;
 	}
-	/* if (data->forks != NULL)
-	{
-		sem_close(data->forks);
-		data->forks = NULL;
-	} */
 }

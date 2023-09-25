@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   initialize_structs.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 12:14:57 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/23 11:14:13 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   initialize_structs.c                               :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	init_mutex_s(t_data *data)
 
 int	init_structs(t_data *data)
 {
-	data->start_time = get_time();
+	data->t_start = get_time();
 	if (init_mutex_s(data) == -1)
 		return (-1);
 	if (init_philos(data, data->forks) == -1)

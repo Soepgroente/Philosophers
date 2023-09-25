@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/24 22:06:48 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/25 10:55:18 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void	eat_foods(t_philo *henk)
 	if (poke_henk(henk, henk->lock, NONE) == false)
 		return ;
 	sem_wait(henk->forks);
-	print_message(henk, "has taken a fork\n");
 	sem_wait(henk->forks);
+	print_message(henk, "has taken a fork\n");
 	print_message(henk, "has taken a fork\n");
 	check_last_eaten(henk, henk->eat, true);
 	print_message(henk, "is eating\n");

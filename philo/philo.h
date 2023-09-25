@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/02 13:49:52 by vincent           #+#    #+#             */
-/*   Updated: 2023/09/23 11:03:43 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   philo.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
+/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ struct s_data
 	int				t_sleep;
 	int				num_eat;
 	int				num;
-	long			start_time;
+	long			t_start;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	print_lock;
 	t_fork			*forks;
@@ -66,7 +66,7 @@ struct s_philo
 	int				t_eat;
 	int				t_think;
 	int				t_die;
-	long			start_time;
+	long			t_start;
 	bool			alive;
 	bool			f1;
 	bool			f2;
@@ -103,7 +103,7 @@ void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 
 /*	Time and sleep	*/
 
-int		get_runtime(long start_time);
+int		get_runtime(long t_start);
 long	get_time(void);
 void	ft_sleep(t_philo *henk, long sleep_duration);
 
