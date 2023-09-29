@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 12:28:54 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/29 15:43:27 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,14 @@ void	stalk_philos(t_data *d)
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
+	data->forks = NULL;
+	data->print = NULL;
 	data->philos = NULL;
 	data->ph_num = ft_philatoi(argv[1]);
 	if (data->ph_num == 0)
 		return (printf("Not enough philosophers\n"), -1);
+	else if (data->ph_num > 999)
+		return (printf("Too many philos to handle\n"), -1);
 	data->t_die = ft_philatoi(argv[2]);
 	data->t_eat = ft_philatoi(argv[3]);
 	data->t_sleep = ft_philatoi(argv[4]);

@@ -6,72 +6,83 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/24 19:59:58 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 11:04:21 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/29 15:49:54 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static size_t	ft_strlen(char *str)
+static int	next_digit(int n)
 {
-	size_t	i;
+	while (n >= 10)
+		n /= 10;
+	return (n);
+}
+
+static int	get_length(int n)
+{
+	int	i;
 
 	i = 0;
-	while (str[i])
+	if (n == 0)
+		return (1);
+	while (n > 0)
+	{
+		n /= 10;
 		i++;
+	}
 	return (i);
 }
 
-static char	*ft_strjoin(char *s1, char *s2)
+static void	string_lcopy(char *dst, char *src, int len)
 {
-	char	*s3;
-	size_t	i;
-	size_t	j;
+	int	i;
 
-	if (!s1 || !s2)
-		return (NULL);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
-	s3 = malloc((i + j + 1) * sizeof(char));
-	if (!s3)
-		return (NULL);
-	i = -1;
-	j = -1;
-	while (s1[++i])
-		s3[i] = s1[i];
-	while (s2[++j])
+	i = 0;
+	while (i < len)
 	{
-		s3[i] = s2[j];
+		dst[i] = src[i];
 		i++;
 	}
-	s3[i] = '\0';
-	return (s3);
+}
+
+static int	ft_pow(int num, int pow)
+{
+	int	x;
+
+	x = num;
+	if (pow == 0)
+		return (1);
+	while (pow > 1)
+	{
+		num *= x;
+		pow--;
+	}
+	return (num);
 }
 
 char	*ft_philitoa(int n)
 {
 	char	*res;
+	int		i;
+	int		len;
 
 	if (n == 0)
 		return ("/sem_0");
-	res = malloc(4 * sizeof(char));
+	len = get_length(n);
+	res = malloc((len + 6) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
-	res[3] = '\0';
-	if (n > 99)
+	string_lcopy(res, "/sem_", 5);
+	i = 5;
+	while (n > 9)
 	{
-		res[2] = (n % 10) + '0';
-		n /= 10;
+		res[i] = next_digit(n) + '0';
+		len--;
+		n = n % (ft_pow(10, len));
+		i++;
 	}
-	else
-		res[2] = '\0';
-	if (n > 9)
-	{
-		res[1] = (n % 10) + '0';
-		n /= 10;
-	}
-	else
-		res[1] = '\0';
-	res[0] = n + '0';
-	return (ft_strjoin("/sem_", res));
+	res[i] = n + '0';
+	res[++i] = '\0';
+	return (res);
 }

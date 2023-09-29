@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/29 15:31:45 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ static int	henk_data(t_data *data, t_philo *p, int num)
 	char	*str2;
 	char	*str3;
 
+	henk_data2(data, p, num);
 	str1 = ft_philitoa(p->num);
 	str2 = ft_philitoa(p->num + data->ph_num);
-	str3 = ft_philitoa(p->num + data->ph_num * 2);
+	str3 = ft_philitoa(p->num + (data->ph_num * 2));
+	printf("Str1: %s\nStr2: %s\nStr3: %s\n", str1, str2, str3);
 	sem_unlink(str1);
 	sem_unlink(str2);
 	sem_unlink(str3);
@@ -45,7 +47,6 @@ static int	henk_data(t_data *data, t_philo *p, int num)
 	p->eat2 = sem_open(str2, O_CREAT, 0644, 1);
 	if (p->lock == SEM_FAILED || p->eat == SEM_FAILED || p->eat2 == SEM_FAILED)
 		return (-1);
-	henk_data2(data, p, num);
 	return (0);
 }
 

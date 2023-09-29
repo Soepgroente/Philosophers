@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/29 14:59:47 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	run_threads(t_data *data, t_philo *philos)
 	{
 		philos[i].t_start = data->t_start;
 		if (pthread_create(&threads[i], NULL, &start_routine, &philos[i]) != 0)
-			return (-1);
+			return (free(threads), -1);
 		i++;
 	}
 	stalk_philos(data);
@@ -34,8 +34,9 @@ int	run_threads(t_data *data, t_philo *philos)
 	while (i < data->ph_num)
 	{
 		if (pthread_join(threads[i], NULL) != 0)
-			return (-1);
+			return (free(threads), -1);
 		i++;
 	}
+	free(threads);
 	return (0);
 }
