@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 15:50:46 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock)
 	bool	saturated;
 
 	pthread_mutex_lock(lock);
+	if (henk->num_eaten >= henk->max_eat)
+		henk->saturated = true;
 	if (henk->saturated == true)
 		saturated = true;
 	else
@@ -48,48 +50,48 @@ bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 	}
 }
 
-void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2)
+void	return_forks(t_fork *fork1, t_fork *fork2)
 {
 	pthread_mutex_lock(&fork1->lock);
 	fork1->fork = AVAILABLE;
 	pthread_mutex_unlock(&fork1->lock);
-	henk->f1 = false;
 	pthread_mutex_lock(&fork2->lock);
 	fork2->fork = AVAILABLE;
 	pthread_mutex_unlock(&fork2->lock);
-	henk->f2 = false;
 }
 
-void	take_first_fork(t_philo *henk, t_fork *fork)
+bool	take_first_fork(t_philo *henk, t_fork *fork)
 {
-	while (henk->f1 == false)
+	while (INFINITY)
 	{
 		if (poke_henk(henk, &henk->lock, NONE) == false)
-			return ;
+			return (false);
 		pthread_mutex_lock(&fork->lock);
 		if (fork->fork == AVAILABLE)
 		{
 			henk->fork1->fork = TAKEN;
-			henk->f1 = true;
 			print_message(henk, &henk->data->print_lock, "has taken a fork\n");
+			pthread_mutex_unlock(&fork->lock);
+			return (true);
 		}
 		pthread_mutex_unlock(&fork->lock);
 		usleep(200);
 	}
 }
 
-void	take_second_fork(t_philo *henk, t_fork *fork)
+bool	take_second_fork(t_philo *henk, t_fork *fork)
 {
-	while (henk->f2 == false)
+	while (INFINITY)
 	{
 		if (poke_henk(henk, &henk->lock, NONE) == false)
-			return ;
+			return (false);
 		pthread_mutex_lock(&fork->lock);
 		if (fork->fork == AVAILABLE)
 		{
 			henk->fork2->fork = TAKEN;
-			henk->f2 = true;
 			print_message(henk, &henk->data->print_lock, "has taken a fork\n");
+			pthread_mutex_unlock(&fork->lock);
+			return (true);
 		}
 		pthread_mutex_unlock(&fork->lock);
 		usleep(200);

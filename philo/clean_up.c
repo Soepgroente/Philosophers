@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   clean_up.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vincent <vincent@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 12:18:26 by vvan-der          #+#    #+#             */
-/*   Updated: 2023/09/22 23:30:17 by vincent          ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   clean_up.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/09/30 15:58:33 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	free_henks(t_philo *henk, int num)
+static void	free_henks(t_philo *henks, int num)
 {
 	int	i;
 
 	i = 0;
 	while (i < num)
 	{
-		pthread_mutex_destroy(&henk[i].lock);
+		pthread_mutex_destroy(&henks[i].lock);
 		i++;
 	}
-	free(henk);
-	henk = NULL;
+	free(henks);
+	henks = NULL;
 }
 
 static void	free_forks(t_fork *forks, int num)
@@ -52,4 +52,6 @@ void	clean_up(t_data *data)
 		free_henks(data->philos, data->ph_num);
 		data->philos = NULL;
 	}
+	pthread_mutex_destroy(&data->lock);
+	pthread_mutex_destroy(&data->print_lock);
 }

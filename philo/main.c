@@ -6,52 +6,11 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/29 14:57:24 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 14:11:34 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	kill_everyone(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->ph_num)
-	{
-		poke_henk(&data->philos[i], &data->philos[i].lock, KILL);
-		i++;
-	}
-}
-
-void	stalk_philos(t_data *d)
-{
-	int	i;
-
-	while (INFINITY)
-	{
-		i = 0;
-		while (i < d->ph_num)
-		{
-			if (poke_henk(&d->philos[i], &d->philos[i].lock, NONE) == false)
-			{
-				kill_everyone(d);
-				usleep(1000);
-				printf("%d %d has died\n", get_runtime(d->t_start), i);
-				return ;
-			}
-			if (d->num_eat < INT_MAX && \
-			check_if_saturated(&d->philos[i], &d->philos[i].lock) == true)
-			{
-				kill_everyone(d);
-				printf("Number of times eaten: %d\n", d->philos[i].num_eaten);
-				return ;
-			}
-			i++;
-		}
-		usleep(100);
-	}
-}
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
@@ -60,6 +19,8 @@ static int	parse_input(t_data *data, int argc, char **argv)
 	data->ph_num = ft_philatoi(argv[1]);
 	if (data->ph_num == 0)
 		return (printf("Not enough philosophers\n"), -1);
+	else if (data->ph_num > 999)
+		return (printf("Too many philos to handle\n"), -1);
 	data->t_die = ft_philatoi(argv[2]);
 	data->t_eat = ft_philatoi(argv[3]);
 	data->t_sleep = ft_philatoi(argv[4]);

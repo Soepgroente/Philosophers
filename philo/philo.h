@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 15:49:35 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 # define NONE 0
 # define KILL 1
+
+# define ALIVE 0
+# define DEATH 1
 
 # define INFINITY 1
 
@@ -68,8 +71,6 @@ struct s_philo
 	int				t_die;
 	long			t_start;
 	bool			alive;
-	bool			f1;
-	bool			f2;
 	bool			saturated;
 	pthread_mutex_t	lock;
 	t_fork			*fork1;
@@ -87,9 +88,9 @@ void	*start_routine(void *d);
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
 bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action);
-void	return_forks(t_philo *henk, t_fork *fork1, t_fork *fork2);
-void	take_first_fork(t_philo *henk, t_fork *fork);
-void	take_second_fork(t_philo *henk, t_fork *fork);
+void	return_forks(t_fork *fork1, t_fork *fork2);
+bool	take_first_fork(t_philo *henk, t_fork *fork);
+bool	take_second_fork(t_philo *henk, t_fork *fork);
 
 /*	Monitoring	*/
 

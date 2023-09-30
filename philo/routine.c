@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 15:49:48 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ static void	eat_foods(t_philo *henk)
 	pthread_mutex_lock(&henk->lock);
 	henk->last_eaten = get_runtime(henk->t_start);
 	henk->num_eaten++;
-	if (henk->num_eaten >= henk->max_eat)
-		henk->saturated = true;
 	pthread_mutex_unlock(&henk->lock);
 	ft_sleep(henk, henk->t_eat * 1000);
-	return_forks(henk, henk->fork1, henk->fork2);
+	return_forks(henk->fork1, henk->fork2);
 }
 
 static void	eat_sleep_repeat(t_data *data, t_philo *henk)
@@ -49,8 +47,10 @@ static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 	{
 		if (poke_henk(henk, &henk->lock, NONE) == false)
 			return ;
-		take_first_fork(henk, henk->fork1);
-		take_second_fork(henk, henk->fork2);
+		if (take_first_fork(henk, henk->fork1) == true)
+			take_second_fork(henk, henk->fork2);
+		else
+			return ;
 		eat_foods(henk);
 		after_dinner_dip(data, henk);
 		reconsider_life_choices(henk);
@@ -63,7 +63,10 @@ void	*start_routine(void *input)
 
 	henk = (t_philo *) input;
 	if (henk->num % 2 == 1)
+	{
+		print_message(henk, &henk->lock, "is thinking\n");
 		usleep(1000);
+	}
 	eat_sleep_repeat(henk->data, henk);
 	return (NULL);
 }
