@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 15:50:46 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 17:02:39 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,7 @@ bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 	pthread_mutex_lock(lock);
 	if (action == KILL)
 		henk->alive = false;
-	if (henk->alive == false)
-	{
-		pthread_mutex_unlock(lock);
-		return (false);
-	}
-	if (henk->t_die <= get_runtime(henk->t_start) - henk->last_eaten)
+	if (henk->alive == false || henk->t_die < get_time() - henk->last_eaten)
 	{
 		henk->alive = false;
 		pthread_mutex_unlock(lock);

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/06 16:50:51 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/11 15:13:46 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 17:17:49 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,19 @@ int	ft_philatoi(char *num)
 	i = 0;
 	result = 0;
 	if (check_num(num) == false)
-		return (printf("Error: invalid input\n"), -1);
+	{
+		printf("Error: invalid input 😕\n");
+		return (-1);
+	}
 	while (num[i])
 	{
 		result *= 10;
 		result += num[i] - '0';
 		if (result > INT_MAX)
-			return (printf("Error: atoi overflow\n"), -1);
+		{
+			printf("Error: atoi overflow\n");
+			return (-1);
+		}
 		i++;
 	}
 	return ((int) result);

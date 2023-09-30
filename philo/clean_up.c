@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 15:58:33 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 16:56:05 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,6 @@ void	clean_up(t_data *data)
 	}
 	pthread_mutex_destroy(&data->lock);
 	pthread_mutex_destroy(&data->print_lock);
+	if (data->threads != NULL)
+		free(data->threads);
 }

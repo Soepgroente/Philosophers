@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 16:47:41 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ long	get_time(void)
 
 int	get_runtime(long t_start)
 {
-	int	time;
-
-	time = (int)(get_time() - t_start) / 1000;
-	return (time);
+	return ((int)(get_time() - t_start) / 1000);
 }
 
 void	ft_sleep(t_philo *henk, long sleep_duration)

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/29 22:11:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/29 22:35:38 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 16:42:44 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static bool	check_saturation(t_data *d)
 	int	i;
 	int	count;
 
+	if (get_runtime(d->t_start) < d->t_eat * d->num_eat * 2)
+		return (false);
 	i = 0;
 	count = 0;
 	while (i < d->ph_num)

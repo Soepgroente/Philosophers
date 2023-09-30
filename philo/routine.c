@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 15:49:48 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 17:08:44 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	reconsider_life_choices(t_philo *henk)
 	if (poke_henk(henk, &henk->lock, NONE) == false)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is thinking\n");
+	ft_sleep(henk, henk->t_think * 1000);
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *henk)
@@ -34,7 +35,7 @@ static void	eat_foods(t_philo *henk)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is eating\n");
 	pthread_mutex_lock(&henk->lock);
-	henk->last_eaten = get_runtime(henk->t_start);
+	henk->last_eaten = get_time();
 	henk->num_eaten++;
 	pthread_mutex_unlock(&henk->lock);
 	ft_sleep(henk, henk->t_eat * 1000);
@@ -47,17 +48,19 @@ static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 	{
 		if (poke_henk(henk, &henk->lock, NONE) == false)
 			return ;
-		if (take_first_fork(henk, henk->fork1) == true)
-			take_second_fork(henk, henk->fork2);
+		if (take_first_fork(henk, henk->fork1) == true && \
+		take_second_fork(henk, henk->fork2) == true)
+		{
+			eat_foods(henk);
+			after_dinner_dip(data, henk);
+			reconsider_life_choices(henk);
+		}
 		else
 			return ;
-		eat_foods(henk);
-		after_dinner_dip(data, henk);
-		reconsider_life_choices(henk);
 	}
 }
 
-void	*start_routine(void *input)
+void	*henk_is_born(void *input)
 {
 	t_philo	*henk;
 

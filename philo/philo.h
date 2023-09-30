@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 15:49:35 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 17:08:48 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ struct s_fork
 struct s_data
 {
 	int				ph_num;
-	int				t_die;
+	long			t_die;
 	int				t_eat;
 	int				t_sleep;
 	int				num_eat;
@@ -58,6 +58,7 @@ struct s_data
 	pthread_mutex_t	print_lock;
 	t_fork			*forks;
 	t_philo			*philos;
+	pthread_t		*threads;
 };
 
 struct s_philo
@@ -65,10 +66,10 @@ struct s_philo
 	int				num;
 	int				num_eaten;
 	int				max_eat;
-	int				last_eaten;
+	long			last_eaten;
 	int				t_eat;
 	int				t_think;
-	int				t_die;
+	long			t_die;
 	long			t_start;
 	bool			alive;
 	bool			saturated;
@@ -82,7 +83,7 @@ struct s_philo
 
 int		run_threads(t_data *data, t_philo *philos);
 int		init_structs(t_data *data);
-void	*start_routine(void *d);
+void	*henk_is_born(void *d);
 
 /*	Lock functions	*/
 

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 16:01:03 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 17:10:00 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 {
 	henk->num = num;
 	henk->num_eaten = 0;
-	henk->last_eaten = 0;
 	henk->max_eat = data->num_eat;
 	henk->t_eat = data->t_eat;
 	henk->t_die = data->t_die;
+	if (data->t_sleep == 0 || data->t_eat == 0)
+		henk->t_think = 1;
+	else
+		henk->t_think = 0;
 	henk->alive = true;
 	henk->saturated = false;
 	henk->data = data;
@@ -87,6 +90,9 @@ static int	init_mutex_s(t_data *data)
 
 int	init_structs(t_data *data)
 {
+	data->threads = malloc(data->ph_num * sizeof(pthread_t));
+	if (data->threads == NULL)
+		return (-1);
 	if (init_mutex_s(data) == -1)
 		return (-1);
 	if (init_philos(data, data->forks) == -1)
