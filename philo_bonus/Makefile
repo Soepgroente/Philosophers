@@ -6,14 +6,14 @@
 #    By: vincent <vincent@student.42.fr>              +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
-#    Updated: 2023/09/29 15:06:51 by vvan-der      ########   odam.nl          #
+#    Updated: 2023/09/30 18:09:52 by vincent       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo_bonus
 CC		= gcc
 RM		= rm -rf
-CFLAGS	= -Wextra -Wall -Werror -pthread -flto -Ofast -g #-fsanitize=thread
+CFLAGS	= -Wextra -Wall -Werror -pthread  -g -fsanitize=thread #-flto -Ofast
 OBJDIR	= Philobjects
 
 SRCS	= 	clean_up.c \
@@ -24,6 +24,7 @@ SRCS	= 	clean_up.c \
 			ft_philitoa.c \
 			prepare_routine.c \
 			routine.c \
+			stalking.c \
 			utilities.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)

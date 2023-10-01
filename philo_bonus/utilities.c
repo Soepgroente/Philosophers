@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 17:35:23 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	get_runtime(long t_start)
 	return (time);
 }
 
-void	ft_sleep(t_philo *henk, long sleep_duration)
+void	ft_sleep(t_philo *sjon, long sleep_duration)
 {
 	long	timestamp;
 	long	goal;
 
-	(void)henk;
+	(void)sjon;
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
 	while (timestamp < goal)

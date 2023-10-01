@@ -6,13 +6,13 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/29 15:31:45 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 18:23:24 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	henk_data2(t_data *data, t_philo *p, int num)
+static void	sjon_data2(t_data *data, t_philo *p, int num)
 {
 	p->num = num;
 	p->num_eaten = 0;
@@ -20,7 +20,10 @@ static void	henk_data2(t_data *data, t_philo *p, int num)
 	p->max_eat = data->num_eat;
 	p->t_eat = data->t_eat;
 	p->t_die = data->t_die;
-	p->t_start = data->t_start;
+	if (data->t_eat == 0 || data->t_sleep == 0)
+		p->t_think = 1;
+	else
+		p->t_think = 0;
 	p->alive = true;
 	p->saturated = false;
 	p->data = data;
@@ -28,17 +31,16 @@ static void	henk_data2(t_data *data, t_philo *p, int num)
 	p->print = data->print;
 }
 
-static int	henk_data(t_data *data, t_philo *p, int num)
+static int	sjon_data(t_data *data, t_philo *p, int num)
 {
 	char	*str1;
 	char	*str2;
 	char	*str3;
 
-	henk_data2(data, p, num);
+	sjon_data2(data, p, num);
 	str1 = ft_philitoa(p->num);
 	str2 = ft_philitoa(p->num + data->ph_num);
 	str3 = ft_philitoa(p->num + (data->ph_num * 2));
-	printf("Str1: %s\nStr2: %s\nStr3: %s\n", str1, str2, str3);
 	sem_unlink(str1);
 	sem_unlink(str2);
 	sem_unlink(str3);
@@ -64,16 +66,16 @@ static int	init_semaphores(t_data *data)
 static int	init_philos(t_data *data)
 {
 	int		i;
-	t_philo	*henk;
+	t_philo	*sjon;
 
 	i = 0;
-	henk = malloc(data->ph_num * sizeof(t_philo));
-	if (henk == NULL)
+	sjon = malloc(data->ph_num * sizeof(t_philo));
+	if (sjon == NULL)
 		return (-1);
-	data->philos = henk;
+	data->philos = sjon;
 	while (i < data->ph_num)
 	{
-		if (henk_data(data, &henk[i], i) == -1)
+		if (sjon_data(data, &sjon[i], i) == -1)
 			return (-1);
 		i++;
 	}
@@ -82,9 +84,11 @@ static int	init_philos(t_data *data)
 
 int	init_structs(t_data *data)
 {
+	data->threads = malloc(data->ph_num * sizeof(pthread_t));
+	if (data->threads == NULL)
+		return (-1);
 	if (init_semaphores(data) == -1)
 		return (-1);
-	data->t_start = get_time();
 	if (init_philos(data) == -1)
 		return (-1);
 	return (0);

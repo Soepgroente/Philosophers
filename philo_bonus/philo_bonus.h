@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/25 11:14:37 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 17:54:36 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@
 # define NONE 0
 # define KILL 1
 
+# define ALIVE 0
+# define DEATH 1
+
 # define INFINITY 1
 
 typedef struct s_philo	t_philo;
@@ -40,17 +43,18 @@ typedef struct s_data	t_data;
 
 struct s_data
 {
-	int		ph_num;
-	int		t_die;
-	int		t_eat;
-	int		t_sleep;
-	int		num_eat;
-	int		num;
-	long	t_start;
-	int		i;
-	sem_t	*forks;
-	sem_t	*print;
-	t_philo	*philos;
+	int			ph_num;
+	long		t_die;
+	int			t_eat;
+	int			t_sleep;
+	int			num_eat;
+	int			num;
+	long		t_start;
+	int			i;
+	sem_t		*forks;
+	sem_t		*print;
+	t_philo		*philos;
+	pthread_t	*threads;
 };
 
 struct s_philo
@@ -58,10 +62,10 @@ struct s_philo
 	int		num;
 	int		num_eaten;
 	int		max_eat;
-	int		last_eaten;
+	long	last_eaten;
 	int		t_eat;
 	int		t_think;
-	int		t_die;
+	long	t_die;
 	long	t_start;
 	bool	alive;
 	bool	saturated;
@@ -77,13 +81,13 @@ struct s_philo
 
 int		run_threads(t_data *data, t_philo *philos);
 int		init_structs(t_data *data);
-void	*start_routine(void *d);
+void	*sjon_is_born(void *d);
 
 /*	Lock functions	*/
 
-bool	check_last_eaten(t_philo *henk, sem_t *lock, bool eaten);
-bool	check_if_saturated(t_philo *henk, sem_t *lock, bool eaten);
-bool	poke_henk(t_philo *henk, sem_t *lock, bool action);
+bool	check_last_eaten(t_philo *sjon, sem_t *lock, bool eaten);
+bool	check_if_saturated(t_philo *sjon, sem_t *lock);
+bool	poke_sjon(t_philo *sjon, sem_t *lock, bool action);
 
 /*	Monitoring	*/
 
@@ -94,12 +98,12 @@ void	stalk_philos(t_data *d);
 int		ft_philatoi(char *num);
 char	*ft_philitoa(int n);
 void	clean_up(t_data *data);
-void	print_message(t_philo *henk, char *msg);
+void	print_message(t_philo *sjon, char *msg);
 
 /*	Time and sleep	*/
 
 int		get_runtime(long t_start);
 long	get_time(void);
-void	ft_sleep(t_philo *henk, long sleep_duration);
+void	ft_sleep(t_philo *sjon, long sleep_duration);
 
 #endif

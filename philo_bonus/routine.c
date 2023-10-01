@@ -6,63 +6,75 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/25 10:55:18 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/09/30 18:15:21 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	reconsider_life_choices(t_philo *henk)
+static void	reconsider_life_choices(t_philo *sjon)
 {
-	if (poke_henk(henk, henk->lock, NONE) == false)
+	if (poke_sjon(sjon, sjon->lock, NONE) == false)
 		return ;
-	print_message(henk, "is thinking\n");
+	print_message(sjon, "is thinking\n");
+	ft_sleep(sjon, sjon->t_think * 1000);
 }
 
-static void	after_dinner_dip(t_data *data, t_philo *henk)
+static void	after_dinner_dip(t_data *data, t_philo *sjon)
 {
-	if (poke_henk(henk, henk->lock, NONE) == true)
+	if (poke_sjon(sjon, sjon->lock, NONE) == true)
 	{
-		print_message(henk, "is sleeping\n");
-		ft_sleep(henk, data->t_sleep * 1000);
+		print_message(sjon, "is sleeping\n");
+		ft_sleep(sjon, data->t_sleep * 1000);
 	}
 }
 
-static void	eat_foods(t_philo *henk)
+static void	eat_foods(t_philo *sjon)
 {
-	if (poke_henk(henk, henk->lock, NONE) == false)
+	if (poke_sjon(sjon, sjon->lock, NONE) == false)
 		return ;
-	sem_wait(henk->forks);
-	sem_wait(henk->forks);
-	print_message(henk, "has taken a fork\n");
-	print_message(henk, "has taken a fork\n");
-	check_last_eaten(henk, henk->eat, true);
-	print_message(henk, "is eating\n");
-	check_if_saturated(henk, henk->eat2, true);
-	ft_sleep(henk, henk->data->t_sleep * 1000);
-	sem_post(henk->forks);
-	sem_post(henk->forks);
+	sem_wait(sjon->forks);
+	sem_wait(sjon->forks);
+	if (check_last_eaten(sjon, sjon->eat, true) == false)
+	{
+		sem_post(sjon->forks);
+		sem_post(sjon->forks);
+		return ;
+	}
+	print_message(sjon, "has taken a fork\n");
+	print_message(sjon, "has taken a fork\n");
+	// if (check_last_eaten(sjon, sjon->eat, true) == false)
+	// 	poke_sjon(sjon, sjon->lock, KILL);
+	// else
+	print_message(sjon, "is eating\n");
+	// check_if_saturated(sjon, sjon->eat2);
+	ft_sleep(sjon, sjon->data->t_sleep * 1000);
+	sem_post(sjon->forks);
+	sem_post(sjon->forks);
 }
 
-static void	eat_sleep_repeat(t_data *data, t_philo *henk)
+static void	eat_sleep_repeat(t_data *data, t_philo *sjon)
 {
 	while (INFINITY)
 	{
-		if (poke_henk(henk, henk->lock, NONE) == false)
+		if (poke_sjon(sjon, sjon->lock, NONE) == false)
 			return ;
-		eat_foods(henk);
-		after_dinner_dip(data, henk);
-		reconsider_life_choices(henk);
+		eat_foods(sjon);
+		after_dinner_dip(data, sjon);
+		reconsider_life_choices(sjon);
 	}
 }
 
-void	*start_routine(void *input)
+void	*sjon_is_born(void *input)
 {
-	t_philo	*henk;
+	t_philo	*sjon;
 
-	henk = (t_philo *) input;
-	if (henk->num % 2 == 1)
+	sjon = (t_philo *) input;
+	if (sjon->num % 2 == 1)
+	{
+		print_message(sjon, "is thinking\n");
 		usleep(1000);
-	eat_sleep_repeat(henk->data, henk);
+	}
+	eat_sleep_repeat(sjon->data, sjon);
 	return (NULL);
 }

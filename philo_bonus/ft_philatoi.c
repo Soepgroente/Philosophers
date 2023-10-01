@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   philatoi.c                                         :+:    :+:            */
+/*   ft_philatoi.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/06 16:50:51 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/24 20:01:14 by vincent       ########   odam.nl         */
+/*   Updated: 2023/09/30 17:25:24 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,19 @@ int	ft_philatoi(char *num)
 	i = 0;
 	result = 0;
 	if (check_num(num) == false)
-		return (printf("Error: invalid input\n"), -1);
+	{
+		printf("Error: invalid input 😕\n");
+		return (-1);
+	}
 	while (num[i])
 	{
 		result *= 10;
 		result += num[i] - '0';
 		if (result > INT_MAX)
-			return (printf("Error: atoi overflow\n"), -1);
+		{
+			printf("Error: atoi overflow\n");
+			return (-1);
+		}
 		i++;
 	}
 	return ((int) result);
