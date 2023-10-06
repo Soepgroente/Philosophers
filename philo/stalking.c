@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/29 22:11:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 16:42:44 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 18:56:52 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	kill_everyone(t_data *data)
 	i = 0;
 	while (i < data->ph_num)
 	{
-		poke_henk(&data->philos[i], &data->philos[i].lock, KILL);
+		poke_henk(&data->philos[i], &data->philos[i].life_lock, KILL);
 		i++;
 	}
 }
@@ -35,7 +35,7 @@ static bool	check_saturation(t_data *d)
 	count = 0;
 	while (i < d->ph_num)
 	{
-		if (check_if_saturated(&d->philos[i], &d->philos[i].lock) == true)
+		if (check_if_saturated(&d->philos[i], &d->philos[i].food_lock) == true)
 			count++;
 		i++;
 	}
@@ -54,11 +54,11 @@ static bool	stalk_table(t_data *d)
 	i = 0;
 	while (i < d->ph_num)
 	{
-		if (poke_henk(&d->philos[i], &d->philos[i].lock, NONE) == false)
+		if (poke_henk(&d->philos[i], &d->philos[i].life_lock, NONE) == false)
 		{
 			kill_everyone(d);
 			usleep(1000);
-			printf("%d %d has died\n", get_runtime(d->t_start), i);
+			printf("%d %d has died\n", get_runtime(d->t_start), i + 1);
 			return (DEATH);
 		}
 		i++;
@@ -76,11 +76,16 @@ void	stalk_philos(t_data *d)
 				return ;
 			if (check_saturation(d) == true)
 				return ;
-			usleep(100);
+			usleep(500);
 		}
 	}
 	else
+	{
 		while (INFINITY)
+		{
 			if (stalk_table(d) == DEATH)
 				return ;
+			usleep(500);
+		}
+	}
 }

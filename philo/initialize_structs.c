@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 17:10:00 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 19:27:41 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,17 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 
 static void	fork_assignment(t_philo *henk, t_fork *forks, int i)
 {
-	if (i % 2 == 0)
+	t_fork	*tmp;
+	
+	henk[i].fork1 = &forks[i];
+	henk[i].fork2 = &forks[(i + 1) % henk->data->ph_num];
+	if (i + 1 == henk->data->ph_num)
 	{
-		henk[i].fork1 = &forks[i - 1];
-		henk[i].fork2 = &forks[i];
+		tmp = henk[i].fork1;
+		henk[i].fork1 = henk[i].fork2;
+		henk[i].fork2 = tmp;		
 	}
-	else
-	{
-		henk[i].fork1 = &forks[i];
-		henk[i].fork2 = &forks[i - 1];
-	}
+	printf("Henk[%d]: fork1: %p, fork 2: %p\n", i, henk[i].fork1, henk[i].fork2);
 }
 
 static int	init_philos(t_data *data, t_fork *forks)
@@ -55,12 +56,13 @@ static int	init_philos(t_data *data, t_fork *forks)
 	while (i < data->ph_num)
 	{
 		henk_data(data, &henk[i], i);
-		if (pthread_mutex_init(&henk[i].lock, NULL) != 0)
+		if (pthread_mutex_init(&henk[i].life_lock, NULL) != 0)
+			return (-1);
+		if (pthread_mutex_init(&henk[i].food_lock, NULL) != 0)
 			return (-1);
 		fork_assignment(henk, forks, i);
 		i++;
 	}
-	henk[0].fork1 = &forks[i - 1];
 	return (0);
 }
 

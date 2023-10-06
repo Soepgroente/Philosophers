@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 16:56:05 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 18:46:58 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	free_henks(t_philo *henks, int num)
 	i = 0;
 	while (i < num)
 	{
-		pthread_mutex_destroy(&henks[i].lock);
+		pthread_mutex_destroy(&henks[i].life_lock);
+		pthread_mutex_destroy(&henks[i].food_lock);
 		i++;
 	}
 	free(henks);

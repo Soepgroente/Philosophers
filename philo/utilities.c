@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 16:47:41 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 18:46:04 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,21 @@ void	ft_sleep(t_philo *henk, long sleep_duration)
 
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
-	while (timestamp < goal && poke_henk(henk, &henk->lock, NONE) == true)
+	while (timestamp < goal && poke_henk(henk, &henk->life_lock, NONE) == true)
 	{
-		usleep(500);
+		usleep(200);
 		timestamp = get_time();
 	}
 }
 
-void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg)
+void	print_message(t_philo *henk, pthread_mutex_t *print_lock, char *msg)
 {
-	pthread_mutex_lock(lock);
-	printf("%d %d %s", get_runtime(henk->t_start), henk->num, msg);
-	pthread_mutex_unlock(lock);
+	pthread_mutex_lock(print_lock);
+	if (poke_henk(henk, &henk->life_lock, NONE) == false)
+	{
+		pthread_mutex_unlock(print_lock);
+		return ;
+	}
+	printf("%d %d %s", get_runtime(henk->t_start), henk->num + 1, msg);
+	pthread_mutex_unlock(print_lock);
 }
