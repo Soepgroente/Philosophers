@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 18:08:03 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 21:23:35 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,51 @@
 
 void	print_message(t_philo *sjon, char *msg)
 {
-	if (poke_sjon(sjon, sjon->lock, NONE) == false)
+	if (poke_sjon(sjon, sjon->poke, NONE) == false)
 		return ;
 	sem_wait(sjon->print);
 	printf("%d %d %s", get_runtime(sjon->t_start), sjon->num, msg);
 	sem_post(sjon->print);
 }
 
-bool	check_if_saturated(t_philo *sjon, sem_t *lock)
+int	check_last_eaten(t_philo *sjon, sem_t *eat, bool eaten)
 {
-	bool	saturated;
-
-	sem_wait(lock);
-	if (sjon->saturated == true || sjon->num_eaten >= sjon->max_eat)
+	sem_wait(eat);
+	if (sjon->t_die < (get_time() - sjon->last_eaten))
 	{
-		sjon->saturated = true;
-		saturated = true;
+		poke_sjon(sjon, sjon->poke, KILL);
+		sem_post(eat);
+		return (-1);
 	}
-	else
-		saturated = false;
-	sem_post(lock);
-	return (saturated);
-}
-
-bool	check_last_eaten(t_philo *sjon, sem_t *lock, bool eaten)
-{
-	bool	alive;
-
-	alive = true;
-	sem_wait(lock);
-	if (sjon->t_die <= get_time() - sjon->last_eaten)
-		alive = false;
-	else if (eaten == true)
+	if (sjon->saturated == true)
+	{
+		sem_post(eat);
+		return (1);
+	}
+	if (eaten == true)
 	{
 		sjon->last_eaten = get_time();
 		sjon->num_eaten++;
+		if (sjon->num_eaten >= sjon->max_eat)
+		{
+			sjon->saturated = true;
+			sem_post(eat);
+			return (1);
+		}
 	}
-	sem_post(lock);
-	return (alive);
+	sem_post(eat);
+	return (0);
 }
 
-bool	poke_sjon(t_philo *sjon, sem_t *lock, bool action)
+bool	poke_sjon(t_philo *sjon, sem_t *poke, bool action)
 {
-	bool	alive;
-
-	sem_wait(lock);
+	sem_wait(poke);
 	if (action == KILL || sjon->alive == false)
 	{
 		sjon->alive = false;
-		alive = false;
+		sem_post(poke);
+		return (false);
 	}
-	else
-		alive = true;
-	sem_post(lock);
-	return (alive);
+	sem_post(poke);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 17:54:36 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/03 17:56:33 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ struct s_philo
 	sem_t	*eat2;
 	sem_t	*forks;
 	sem_t	*print;
-	sem_t	*lock;
+	sem_t	*poke;
 	t_data	*data;
 };
 
@@ -85,8 +85,7 @@ void	*sjon_is_born(void *d);
 
 /*	Lock functions	*/
 
-bool	check_last_eaten(t_philo *sjon, sem_t *lock, bool eaten);
-bool	check_if_saturated(t_philo *sjon, sem_t *lock);
+int		check_last_eaten(t_philo *sjon, sem_t *lock, bool eaten);
 bool	poke_sjon(t_philo *sjon, sem_t *lock, bool action);
 
 /*	Monitoring	*/

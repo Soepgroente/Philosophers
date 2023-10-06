@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/09/30 18:23:24 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/03 17:45:56 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,14 @@ static int	sjon_data(t_data *data, t_philo *p, int num)
 	sem_unlink(str1);
 	sem_unlink(str2);
 	sem_unlink(str3);
-	p->lock = sem_open(str1, O_CREAT, 0644, 1);
+	p->poke = sem_open(str1, O_CREAT, 0644, 1);
 	p->eat = sem_open(str2, O_CREAT, 0644, 1);
-	p->eat2 = sem_open(str2, O_CREAT, 0644, 1);
-	if (p->lock == SEM_FAILED || p->eat == SEM_FAILED || p->eat2 == SEM_FAILED)
+	p->eat2 = sem_open(str3, O_CREAT, 0644, 1);
+	if (p->poke == SEM_FAILED || p->eat == SEM_FAILED || p->eat2 == SEM_FAILED)
 		return (-1);
+	free(str1);
+	free(str2);
+	free(str3);
 	return (0);
 }
 

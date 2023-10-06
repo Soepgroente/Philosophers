@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/30 17:25:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 18:20:34 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/06 21:16:45 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	kill_everyone(t_data *data)
 	i = 0;
 	while (i < data->ph_num)
 	{
-		poke_sjon(&data->philos[i], (&data->philos[i])->lock, KILL);
+		poke_sjon(&data->philos[i], (&data->philos[i])->poke, KILL);
 		i++;
 	}
 }
@@ -35,7 +35,7 @@ static bool	check_saturation(t_data *d)
 	count = 0;
 	while (i < d->ph_num)
 	{
-		if (check_if_saturated(&d->philos[i], (&d->philos[i])->eat2) == true)
+		if (check_last_eaten(&d->philos[i], (&d->philos[i])->eat, false) == 1)
 			count++;
 		i++;
 	}
@@ -54,7 +54,7 @@ static bool	stalk_table(t_data *d)
 	i = 0;
 	while (i < d->ph_num)
 	{
-		if (poke_sjon(&d->philos[i], (&d->philos[i])->lock, NONE) == false)
+		if (poke_sjon(&d->philos[i], (&d->philos[i])->poke, NONE) == false)
 		{
 			kill_everyone(d);
 			usleep(1000);
@@ -76,11 +76,16 @@ void	stalk_philos(t_data *d)
 				return ;
 			if (check_saturation(d) == true)
 				return ;
-			usleep(100);
+			usleep(500);
 		}
 	}
 	else
+	{
 		while (INFINITY)
+		{
 			if (stalk_table(d) == DEATH)
 				return ;
+			usleep(500);
+		}
+	}
 }

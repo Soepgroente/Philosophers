@@ -6,18 +6,11 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/24 19:59:58 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/29 15:49:54 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/03 18:14:43 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-static int	next_digit(int n)
-{
-	while (n >= 10)
-		n /= 10;
-	return (n);
-}
 
 static int	get_length(int n)
 {
@@ -46,43 +39,26 @@ static void	string_lcopy(char *dst, char *src, int len)
 	}
 }
 
-static int	ft_pow(int num, int pow)
-{
-	int	x;
-
-	x = num;
-	if (pow == 0)
-		return (1);
-	while (pow > 1)
-	{
-		num *= x;
-		pow--;
-	}
-	return (num);
-}
-
 char	*ft_philitoa(int n)
 {
 	char	*res;
 	int		i;
 	int		len;
 
-	if (n == 0)
-		return ("/sem_0");
 	len = get_length(n);
 	res = malloc((len + 6) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	string_lcopy(res, "/sem_", 5);
-	i = 5;
-	while (n > 9)
+	i = len + 5;
+	if (n == 0)
+		res[i - 1] = '0';
+	while (n > 0)
 	{
-		res[i] = next_digit(n) + '0';
-		len--;
-		n = n % (ft_pow(10, len));
-		i++;
+		i--;
+		res[i] = n % 10 + '0';
+		n /= 10;
 	}
-	res[i] = n + '0';
-	res[++i] = '\0';
+	res[i + len] = '\0';
 	return (res);
 }
