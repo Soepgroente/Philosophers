@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/06 19:27:41 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 11:25:55 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,21 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 
 static void	fork_assignment(t_philo *henk, t_fork *forks, int i)
 {
-	t_fork	*tmp;
-	
 	henk[i].fork1 = &forks[i];
-	henk[i].fork2 = &forks[(i + 1) % henk->data->ph_num];
+	henk[i].fork2 = &forks[i + 1];
 	if (i + 1 == henk->data->ph_num)
 	{
-		tmp = henk[i].fork1;
-		henk[i].fork1 = henk[i].fork2;
-		henk[i].fork2 = tmp;		
+		if (henk->data->ph_num % 2 == 1)
+		{
+			henk[i].fork1 = &forks[0];
+			henk[i].fork2 = &forks[i];
+		}
+		else
+		{
+			henk[i].fork1 = &forks[i];
+			henk[i].fork2 = &forks[0];
+		}
 	}
-	printf("Henk[%d]: fork1: %p, fork 2: %p\n", i, henk[i].fork1, henk[i].fork2);
 }
 
 static int	init_philos(t_data *data, t_fork *forks)
@@ -78,7 +82,6 @@ static int	init_mutex_s(t_data *data)
 	data->forks = forks;
 	while (i < data->ph_num)
 	{
-		forks[i].fork = AVAILABLE;
 		if (pthread_mutex_init(&forks[i].lock, NULL) != 0)
 			return (-1);
 		i++;

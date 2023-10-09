@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/06 19:02:16 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 11:24:31 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,12 @@ typedef struct s_fork	t_fork;
 struct s_fork
 {
 	pthread_mutex_t	lock;
-	bool			fork;
 };
 
 struct s_data
 {
 	int				ph_num;
-	long			t_die;
+	int				t_die;
 	int				t_eat;
 	int				t_sleep;
 	int				num_eat;
@@ -66,10 +65,10 @@ struct s_philo
 	int				num;
 	int				num_eaten;
 	int				max_eat;
-	long			last_eaten;
+	int				last_eaten;
 	int				t_eat;
 	int				t_think;
-	long			t_die;
+	int				t_die;
 	long			t_start;
 	bool			alive;
 	bool			saturated;

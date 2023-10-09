@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 16:57:23 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/09 11:23:11 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	run_threads(t_data *data, t_philo *philos)
 	while (i < data->ph_num)
 	{
 		philos[i].t_start = data->t_start;
-		philos[i].last_eaten = get_time();
+		philos[i].last_eaten = 0;
 		if (pthread_create(&t[i], NULL, &henk_is_born, &philos[i]) != 0)
 			return (-1);
 		i++;

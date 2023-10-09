@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/06 18:45:40 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 10:58:45 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static void	after_dinner_dip(t_data *data, t_philo *henk)
 	}
 }
 
-
-
 static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 {
 	while (INFINITY)
@@ -37,7 +35,6 @@ static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 		if (poke_henk(henk, &henk->life_lock, NONE) == false)
 			return ;
 		take_forks(henk);
-		// eat_foods(henk);
 		after_dinner_dip(data, henk);
 		reconsider_life_choices(henk);
 	}
