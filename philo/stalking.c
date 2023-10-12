@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/29 22:11:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/06 18:56:52 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/12 21:00:10 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	kill_everyone(t_data *data)
 	i = 0;
 	while (i < data->ph_num)
 	{
-		poke_henk(&data->philos[i], &data->philos[i].life_lock, KILL);
+		kill_henk(&data->philos[i], &data->philos[i].life_lock);
 		i++;
 	}
 }
@@ -29,8 +29,6 @@ static bool	check_saturation(t_data *d)
 	int	i;
 	int	count;
 
-	if (get_runtime(d->t_start) < d->t_eat * d->num_eat * 2)
-		return (false);
 	i = 0;
 	count = 0;
 	while (i < d->ph_num)
@@ -54,10 +52,9 @@ static bool	stalk_table(t_data *d)
 	i = 0;
 	while (i < d->ph_num)
 	{
-		if (poke_henk(&d->philos[i], &d->philos[i].life_lock, NONE) == false)
+		if (poke_henk(&d->philos[i], &d->philos[i].life_lock) == false)
 		{
 			kill_everyone(d);
-			usleep(1000);
 			printf("%d %d has died\n", get_runtime(d->t_start), i + 1);
 			return (DEATH);
 		}
@@ -68,6 +65,7 @@ static bool	stalk_table(t_data *d)
 
 void	stalk_philos(t_data *d)
 {
+	usleep(2500);
 	if (d->num_eat < INT_MAX)
 	{
 		while (INFINITY)

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/09 16:26:14 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/12 21:12:57 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ struct s_data
 	int				num_eat;
 	int				num;
 	long			t_start;
+	pthread_mutex_t	start;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	print_lock;
 	t_fork			*forks;
@@ -65,10 +66,10 @@ struct s_philo
 	int				num;
 	int				num_eaten;
 	int				max_eat;
-	int				last_eaten;
+	long			last_eaten;
 	int				t_eat;
 	int				t_think;
-	int				t_die;
+	long			t_die;
 	long			t_start;
 	bool			alive;
 	bool			saturated;
@@ -88,9 +89,10 @@ void	*henk_is_born(void *d);
 /*	Lock functions	*/
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
-bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action);
+bool	poke_henk(t_philo *henk, pthread_mutex_t *lock);
 void	eat_foods(t_philo *henk);
 void	take_forks(t_philo *henk);
+void	kill_henk(t_philo *henk, pthread_mutex_t *life_lock);
 
 /*	Monitoring	*/
 
@@ -106,6 +108,6 @@ void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 
 int		get_runtime(long t_start);
 long	get_time(void);
-void	ft_sleep(t_philo *henk, long sleep_duration);
+void	power_naps(t_philo *henk, long sleep_duration);
 
 #endif

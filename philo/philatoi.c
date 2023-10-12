@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/06 16:50:51 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 17:17:49 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/12 15:16:44 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static bool	check_num(char *num)
 int	ft_philatoi(char *num)
 {
 	int		i;
-	long	result;
+	int	result;
 
 	i = 0;
 	result = 0;
