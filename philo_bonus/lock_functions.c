@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/06 21:23:35 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 17:32:49 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_message(t_philo *sjon, char *msg)
 int	check_last_eaten(t_philo *sjon, sem_t *eat, bool eaten)
 {
 	sem_wait(eat);
-	if (sjon->t_die < (get_time() - sjon->last_eaten))
+	if (sjon->t_die < (get_runtime(sjon->t_start) - sjon->last_eaten))
 	{
 		poke_sjon(sjon, sjon->poke, KILL);
 		sem_post(eat);
@@ -37,7 +37,7 @@ int	check_last_eaten(t_philo *sjon, sem_t *eat, bool eaten)
 	}
 	if (eaten == true)
 	{
-		sjon->last_eaten = get_time();
+		sjon->last_eaten = get_runtime(sjon->t_start);
 		sjon->num_eaten++;
 		if (sjon->num_eaten >= sjon->max_eat)
 		{

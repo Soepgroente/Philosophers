@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/09 11:24:31 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 16:26:14 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	stalk_philos(t_data *d);
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
-void	clean_up(t_data *data);
+void	clean_up(t_data *data, bool initialized);
 void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 
 /*	Time and sleep	*/

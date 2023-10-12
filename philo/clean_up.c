@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/06 18:46:58 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 16:27:19 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	free_forks(t_fork *forks, int num)
 	forks = NULL;
 }
 
-void	clean_up(t_data *data)
+void	clean_up(t_data *data, bool initialized)
 {
 	if (data->forks != NULL)
 	{
@@ -53,8 +53,11 @@ void	clean_up(t_data *data)
 		free_henks(data->philos, data->ph_num);
 		data->philos = NULL;
 	}
-	pthread_mutex_destroy(&data->lock);
-	pthread_mutex_destroy(&data->print_lock);
-	if (data->threads != NULL)
-		free(data->threads);
+	if (initialized == true)
+	{
+		pthread_mutex_destroy(&data->lock);
+		pthread_mutex_destroy(&data->print_lock);
+		if (data->threads != NULL)
+			free(data->threads);
+	}
 }

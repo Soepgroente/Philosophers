@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/09 11:26:47 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 16:16:22 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 	if (action == KILL || henk->alive == false || \
 	henk->t_die < get_runtime(henk->t_start) - henk->last_eaten)
 	{
+		// printf("Henk #%d: Die_time: %d < runtime: %d - eaten %d\n", henk->num, henk->t_die, get_runtime(henk->t_start), henk->last_eaten);
 		henk->alive = false;
 		pthread_mutex_unlock(lock);
 		return (false);
@@ -48,12 +49,15 @@ bool	poke_henk(t_philo *henk, pthread_mutex_t *lock, bool action)
 void	take_forks(t_philo *henk)
 {
 	pthread_mutex_lock(&henk->fork1->lock);
-	print_message(henk, &henk->data->print_lock, "has taken a fork\n");
-	pthread_mutex_lock(&henk->fork2->lock);
-	print_message(henk, &henk->data->print_lock, "has taken a fork\n");
-	eat_foods(henk);
-	ft_sleep(henk, henk->t_eat * 1000);
-	pthread_mutex_unlock(&henk->fork2->lock);
+	if (henk->data->ph_num > 1)
+	{
+		print_message(henk, &henk->data->print_lock, "has taken a fork\n");
+		pthread_mutex_lock(&henk->fork2->lock);
+		print_message(henk, &henk->data->print_lock, "has taken a fork\n");
+		eat_foods(henk);
+		ft_sleep(henk, henk->t_eat * 1000);
+		pthread_mutex_unlock(&henk->fork2->lock);
+	}
 	pthread_mutex_unlock(&henk->fork1->lock);
 }
 

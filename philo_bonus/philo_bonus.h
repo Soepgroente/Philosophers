@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/03 17:56:33 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 17:32:16 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_data	t_data;
 struct s_data
 {
 	int			ph_num;
-	long		t_die;
+	int			t_die;
 	int			t_eat;
 	int			t_sleep;
 	int			num_eat;
@@ -62,10 +62,10 @@ struct s_philo
 	int		num;
 	int		num_eaten;
 	int		max_eat;
-	long	last_eaten;
+	int		last_eaten;
 	int		t_eat;
 	int		t_think;
-	long	t_die;
+	int		t_die;
 	long	t_start;
 	bool	alive;
 	bool	saturated;

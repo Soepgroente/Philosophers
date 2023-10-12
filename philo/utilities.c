@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/09 11:20:33 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 15:20:30 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ void	ft_sleep(t_philo *henk, long sleep_duration)
 {
 	long	timestamp;
 	long	goal;
+	int		x;
 
+	x = 50 + henk->data->ph_num * 5;
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
 	while (timestamp < goal && poke_henk(henk, &henk->life_lock, NONE) == true)
 	{
-		usleep(500);
+		usleep(x);
 		timestamp = get_time();
 	}
 }

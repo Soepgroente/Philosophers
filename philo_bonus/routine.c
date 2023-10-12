@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/06 21:20:08 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/09 17:36:33 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	reconsider_life_choices(t_philo *sjon)
 	if (poke_sjon(sjon, sjon->poke, NONE) == false)
 		return ;
 	print_message(sjon, "is thinking\n");
-	ft_sleep(sjon, sjon->t_think * 1000);
+	ft_sleep(sjon, sjon->t_die * 200);
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *sjon)
