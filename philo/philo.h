@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/12 21:12:57 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/13 13:29:44 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ struct s_philo
 	long			t_start;
 	bool			alive;
 	bool			saturated;
-	pthread_mutex_t	life_lock;
-	pthread_mutex_t	food_lock;
+	pthread_mutex_t	lock;
 	t_fork			*fork1;
 	t_fork			*fork2;
 	t_data			*data;
@@ -89,9 +88,10 @@ void	*henk_is_born(void *d);
 /*	Lock functions	*/
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock);
-bool	poke_henk(t_philo *henk, pthread_mutex_t *lock);
+bool	poke_henk(t_philo *henk);
 void	eat_foods(t_philo *henk);
-void	take_forks(t_philo *henk);
+int		take_forks(t_philo *henk);
+void	return_forks(t_philo *henk);
 void	kill_henk(t_philo *henk, pthread_mutex_t *life_lock);
 
 /*	Monitoring	*/

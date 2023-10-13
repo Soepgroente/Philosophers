@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/12 21:25:55 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/13 13:13:11 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,41 +28,46 @@ bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock)
 	return (saturated);
 }
 
-bool	poke_henk(t_philo *henk, pthread_mutex_t *life_lock)
+bool	poke_henk(t_philo *henk)
 {
-	pthread_mutex_lock(life_lock);
+	pthread_mutex_lock(&henk->lock);
 	if (henk->alive == false || henk->t_die < get_time() - henk->last_eaten)
 	{
 		henk->alive = false;
-		pthread_mutex_unlock(life_lock);
+		pthread_mutex_unlock(&henk->lock);
 		return (false);
 	}
-	pthread_mutex_unlock(life_lock);
+	pthread_mutex_unlock(&henk->lock);
 	return (true);
-}
-
-void	take_forks(t_philo *henk)
-{
-	pthread_mutex_lock(&henk->fork1->lock);
-	if (henk->data->ph_num > 1)
-	{
-		print_message(henk, &henk->data->print_lock, "has taken a fork\n");
-		pthread_mutex_lock(&henk->fork2->lock);
-		print_message(henk, &henk->data->print_lock, "has taken a fork\n");
-		eat_foods(henk);
-		power_naps(henk, henk->t_eat * 1000);
-		pthread_mutex_unlock(&henk->fork2->lock);
-	}
-	pthread_mutex_unlock(&henk->fork1->lock);
 }
 
 void	eat_foods(t_philo *henk)
 {
-	if (poke_henk(henk, &henk->life_lock) == false)
+	if (poke_henk(henk) == false)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is eating\n");
-	pthread_mutex_lock(&henk->life_lock);
+	pthread_mutex_lock(&henk->lock);
 	henk->num_eaten++;
 	henk->last_eaten = get_time();
-	pthread_mutex_unlock(&henk->life_lock);
+	pthread_mutex_unlock(&henk->lock);
+	power_naps(henk, henk->t_eat * 1000);
+}
+
+void	print_message(t_philo *henk, pthread_mutex_t *print_lock, char *msg)
+{
+	pthread_mutex_lock(print_lock);
+	if (poke_henk(henk) == false)
+	{
+		pthread_mutex_unlock(print_lock);
+		return ;
+	}
+	printf("%d %d %s", get_runtime(henk->t_start), henk->num + 1, msg);
+	pthread_mutex_unlock(print_lock);
+}
+
+void	kill_henk(t_philo *henk, pthread_mutex_t *lock)
+{
+	pthread_mutex_lock(lock);
+	henk->alive = false;
+	pthread_mutex_unlock(lock);
 }

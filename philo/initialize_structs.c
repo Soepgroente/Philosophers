@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/12 21:13:07 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/13 13:26:50 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ static int	init_philos(t_data *data, t_fork *forks)
 	while (i < data->ph_num)
 	{
 		henk_data(data, &henk[i], i);
-		if (pthread_mutex_init(&henk[i].life_lock, NULL) != 0)
-			return (-1);
-		if (pthread_mutex_init(&henk[i].food_lock, NULL) != 0)
+		if (pthread_mutex_init(&henk[i].lock, NULL) != 0)
 			return (-1);
 		fork_assignment(henk, forks, i);
 		i++;
@@ -83,12 +81,14 @@ static int	init_mutex_s(t_data *data)
 	while (i < data->ph_num)
 	{
 		if (pthread_mutex_init(&forks[i].lock, NULL) != 0)
+		{
+			while (i-- > 0)
+				pthread_mutex_destroy(&forks[i].lock);
 			return (-1);
+		}
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
-		return (-1);
-	if (pthread_mutex_init(&data->lock, NULL) != 0)
 		return (-1);
 	if (pthread_mutex_init(&data->start, NULL) != 0)
 		return (-1);

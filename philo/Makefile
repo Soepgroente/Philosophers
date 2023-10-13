@@ -6,17 +6,18 @@
 #    By: vincent <vincent@student.42.fr>              +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
-#    Updated: 2023/10/12 21:19:59 by vvan-der      ########   odam.nl          #
+#    Updated: 2023/10/13 15:54:53 by vvan-der      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
 CC		= cc
 RM		= rm -rf
-CFLAGS	= -Wextra -Wall -Werror -flto -O3 -g -fsanitize=thread #-pthread 
+CFLAGS	= -Wextra -Wall -Werror -flto -O3 #-g -fsanitize=thread #-pthread 
 OBJDIR	= Philobjects
 
 SRCS	= 	clean_up.c \
+			fork_functions.c \
 			initialize_structs.c \
 			lock_functions.c \
 			main.c \
@@ -24,7 +25,7 @@ SRCS	= 	clean_up.c \
 			prepare_routine.c \
 			routine.c \
 			stalking.c \
-			utilities.c
+			time_functions.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
