@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/15 19:59:09 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/15 20:41:15 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ static int	init_mutex_s(t_data *data)
 
 int	init_structs(t_data *data)
 {
-	data->philos = NULL;
-	data->forks = NULL;
 	data->threads = malloc(data->ph_num * sizeof(pthread_t));
 	if (data->threads == NULL)
 		return (-1);
