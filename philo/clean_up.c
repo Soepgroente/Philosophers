@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/13 13:26:55 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 19:57:54 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,26 @@ static void	free_henks(t_philo *henks, int num)
 	henks = NULL;
 }
 
-static void	free_forks(t_fork *forks, int num)
+void	destroy_forks(pthread_mutex_t *forks, int num)
 {
 	int	i;
 
 	i = 0;
 	while (i < num)
 	{
-		pthread_mutex_destroy(&forks[i].lock);
+		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
 	free(forks);
 	forks = NULL;
 }
 
-void	clean_up(t_data *data, bool initialized)
+void	clean_up(t_data *data)
 {
-	if (data->forks != NULL)
-	{
-		free_forks(data->forks, data->ph_num);
-		data->forks = NULL;
-	}
-	if (data->philos != NULL)
-	{
-		free_henks(data->philos, data->ph_num);
-		data->philos = NULL;
-	}
-	if (initialized == true)
-	{
-		pthread_mutex_destroy(&data->print_lock);
-		if (data->threads != NULL)
-			free(data->threads);
-	}
+	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->start);
+	destroy_forks(data->forks, data->ph_num);
+	free_henks(data->philos, data->ph_num);
+	if (data->threads != NULL)
+		free(data->threads);
 }

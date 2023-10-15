@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/09 16:25:57 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 19:45:21 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,14 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (parse_input(&data, argc, argv) == -1)
-	{
-		clean_up(&data, false);
 		return (2);
-	}
 	if (init_structs(&data) == -1)
-	{
-		clean_up(&data, false);
 		return (3);
-	}
-	if (run_threads(&data, data.philos) == -1)
+	if (thread_carefully(&data, data.philos) == -1)
 	{
-		clean_up(&data, true);
+		clean_up(&data);
 		return (4);
 	}
-	clean_up(&data, true);
+	clean_up(&data);
 	return (0);
 }

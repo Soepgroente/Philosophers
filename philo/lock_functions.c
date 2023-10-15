@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/13 13:13:11 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 19:18:24 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,26 @@
 
 bool	check_if_saturated(t_philo *henk, pthread_mutex_t *lock)
 {
-	bool	saturated;
-
 	pthread_mutex_lock(lock);
 	if (henk->num_eaten >= henk->max_eat)
 	{
 		henk->saturated = true;
-		saturated = true;
+		pthread_mutex_unlock(lock);
+		return (true);
 	}
-	else
-		saturated = false;
 	pthread_mutex_unlock(lock);
-	return (saturated);
+	return (false);
 }
 
 bool	poke_henk(t_philo *henk)
 {
 	pthread_mutex_lock(&henk->lock);
-	if (henk->alive == false || henk->t_die < get_time() - henk->last_eaten)
+	if (henk->alive == false)
+	{
+		pthread_mutex_unlock(&henk->lock);
+		return (false);
+	}
+	if (henk->t_die < get_time() - henk->last_eaten)
 	{
 		henk->alive = false;
 		pthread_mutex_unlock(&henk->lock);

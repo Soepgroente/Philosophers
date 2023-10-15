@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/13 13:26:50 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 19:59:09 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,26 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->data = data;
 }
 
-static void	fork_assignment(t_philo *henk, t_fork *forks, int i)
+static void	fork_assignment(t_philo *henk, pthread_mutex_t *forks, int i)
 {
-	henk[i].fork1 = &forks[i];
-	henk[i].fork2 = &forks[i + 1];
-	if (i + 1 == henk->data->ph_num)
+	if (i == 0)
 	{
-		if (henk->data->ph_num % 2 == 1)
-		{
-			henk[i].fork1 = &forks[0];
-			henk[i].fork2 = &forks[i];
-		}
-		else
-		{
-			henk[i].fork1 = &forks[i];
-			henk[i].fork2 = &forks[0];
-		}
+		henk[i].fork1 = &forks[henk->data->ph_num - 1];
+		henk[i].fork2 = &forks[0];
+	}
+	else if (i % 2 == 0)
+	{
+		henk[i].fork1 = &forks[i - 1];
+		henk[i].fork2 = &forks[i];
+	}
+	else
+	{
+		henk[i].fork1 = &forks[i];
+		henk[i].fork2 = &forks[i - 1];
 	}
 }
 
-static int	init_philos(t_data *data, t_fork *forks)
+static int	init_philos(t_data *data, pthread_mutex_t *forks)
 {
 	int		i;
 	t_philo	*henk;
@@ -61,7 +61,11 @@ static int	init_philos(t_data *data, t_fork *forks)
 	{
 		henk_data(data, &henk[i], i);
 		if (pthread_mutex_init(&henk[i].lock, NULL) != 0)
+		{
+			while (i-- > 0)
+				pthread_mutex_destroy(&henk[i].lock);
 			return (-1);
+		}
 		fork_assignment(henk, forks, i);
 		i++;
 	}
@@ -71,38 +75,47 @@ static int	init_philos(t_data *data, t_fork *forks)
 static int	init_mutex_s(t_data *data)
 {
 	int		i;
-	t_fork	*forks;
+	pthread_mutex_t	*forks;
 
 	i = 0;
-	forks = malloc(data->ph_num * sizeof(t_fork));
+	forks = malloc((data->ph_num) * sizeof(pthread_mutex_t));
 	if (forks == NULL)
 		return (-1);
 	data->forks = forks;
+	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&data->start, NULL) != 0)
+		return (pthread_mutex_destroy(&data->print_lock), -1);
 	while (i < data->ph_num)
 	{
-		if (pthread_mutex_init(&forks[i].lock, NULL) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 		{
 			while (i-- > 0)
-				pthread_mutex_destroy(&forks[i].lock);
+				pthread_mutex_destroy(&forks[i]);
+			pthread_mutex_destroy(&data->print_lock);
+			pthread_mutex_destroy(&data->start);
 			return (-1);
 		}
 		i++;
 	}
-	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
-		return (-1);
-	if (pthread_mutex_init(&data->start, NULL) != 0)
-		return (-1);
 	return (0);
 }
 
 int	init_structs(t_data *data)
 {
+	data->philos = NULL;
+	data->forks = NULL;
 	data->threads = malloc(data->ph_num * sizeof(pthread_t));
 	if (data->threads == NULL)
 		return (-1);
 	if (init_mutex_s(data) == -1)
 		return (-1);
 	if (init_philos(data, data->forks) == -1)
+	{
+		pthread_mutex_destroy(&data->print_lock);
+		pthread_mutex_destroy(&data->start);
+		destroy_forks(data->forks, data->ph_num);
 		return (-1);
+	}
 	return (0);
 }

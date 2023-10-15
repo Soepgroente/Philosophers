@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/13 13:29:44 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 19:57:32 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 # include <errno.h>
 # include <sys/time.h>
 
-# define AVAILABLE 0
-# define TAKEN 1
-
-# define NONE 0
-# define KILL 1
-
 # define ALIVE 0
 # define DEATH 1
 
@@ -37,12 +31,6 @@
 
 typedef struct s_philo	t_philo;
 typedef struct s_data	t_data;
-typedef struct s_fork	t_fork;
-
-struct s_fork
-{
-	pthread_mutex_t	lock;
-};
 
 struct s_data
 {
@@ -54,9 +42,8 @@ struct s_data
 	int				num;
 	long			t_start;
 	pthread_mutex_t	start;
-	pthread_mutex_t	lock;
 	pthread_mutex_t	print_lock;
-	t_fork			*forks;
+	pthread_mutex_t	*forks;
 	t_philo			*philos;
 	pthread_t		*threads;
 };
@@ -74,14 +61,19 @@ struct s_philo
 	bool			alive;
 	bool			saturated;
 	pthread_mutex_t	lock;
-	t_fork			*fork1;
-	t_fork			*fork2;
+	pthread_mutex_t	*fork1;
+	pthread_mutex_t	*fork2;
 	t_data			*data;
 };
 
+/*	Cleaning up	*/
+
+void	clean_up(t_data *data);
+void	destroy_forks(pthread_mutex_t *forks, int num);
+
 /*	Initialization */
 
-int		run_threads(t_data *data, t_philo *philos);
+int		thread_carefully(t_data *data, t_philo *philos);
 int		init_structs(t_data *data);
 void	*henk_is_born(void *d);
 
@@ -101,7 +93,6 @@ void	stalk_philos(t_data *d);
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
-void	clean_up(t_data *data, bool initialized);
 void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 
 /*	Time and sleep	*/

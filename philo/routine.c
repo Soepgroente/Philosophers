@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/12 20:55:47 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/14 11:45:56 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/15 19:11:12 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	reconsider_life_choices(t_philo *henk)
 	if (poke_henk(henk) == false)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is thinking\n");
+	usleep(100);
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *henk)
@@ -30,6 +31,8 @@ static void	after_dinner_dip(t_data *data, t_philo *henk)
 
 static void	eat_sleep_repeat(t_data *data, t_philo *henk)
 {
+	if (henk->num % 2 == 0)
+		print_message(henk, &henk->data->print_lock, "is thinking\n");
 	while (INFINITY)
 	{
 		if (poke_henk(henk) == false)
@@ -51,9 +54,11 @@ void	*henk_is_born(void *input)
 	pthread_mutex_lock(&henk->data->start);
 	pthread_mutex_unlock(&henk->data->start);
 	henk->t_start = henk->data->t_start;
-	print_message(henk, &henk->data->print_lock, "is thinking\n");
 	if (henk->num % 2 == 1)
-		usleep(2000);
+	{
+		print_message(henk, &henk->data->print_lock, "is thinking\n");
+		usleep(henk->t_die / 8);
+	}
 	eat_sleep_repeat(henk->data, henk);
 	return (NULL);
 }
