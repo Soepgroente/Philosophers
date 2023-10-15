@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/03 16:39:51 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 21:13:13 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 int	run_threads(t_data *data, t_philo *philos)
 {
-	pthread_t	*threads;
 	int			i;
 
 	i = 0;
-	threads = data->threads;
 	data->t_start = get_time();
 	while (i < data->ph_num)
 	{

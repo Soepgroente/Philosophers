@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/09 17:26:29 by vvan-der      ########   odam.nl         */
+/*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
+/*   Updated: 2023/10/15 20:41:36 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (parse_input(&data, argc, argv) == -1)
-	{
-		clean_up(&data);
 		return (2);
-	}
 	if (init_structs(&data) == -1)
 	{
 		clean_up(&data);

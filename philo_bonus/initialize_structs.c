@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/03 17:45:56 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 23:29:48 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int	sjon_data(t_data *data, t_philo *p, int num)
 	str1 = ft_philitoa(p->num);
 	str2 = ft_philitoa(p->num + data->ph_num);
 	str3 = ft_philitoa(p->num + (data->ph_num * 2));
+	if (str1 == NULL || str2 == NULL || str3 == NULL)
+		return (-1);
 	sem_unlink(str1);
 	sem_unlink(str2);
 	sem_unlink(str3);
@@ -60,9 +62,15 @@ static int	init_semaphores(t_data *data)
 	sem_unlink("/sem_fork");
 	sem_unlink("/sem_print");
 	data->forks = sem_open("/sem_fork", O_CREAT, 0644, data->ph_num);
-	data->print = sem_open("/sem_print", O_CREAT, 0644, 1);
-	if (data->forks == SEM_FAILED || data->print == SEM_FAILED)
+	if (data->forks == SEM_FAILED)
 		return (-1);
+	data->print = sem_open("/sem_print", O_CREAT, 0644, 1);
+	if (data->print == SEM_FAILED)
+	{
+		sem_close(data->forks);
+		sem_unlink("/sem_fork");
+		return (-1);
+	}
 	return (0);
 }
 
@@ -87,9 +95,6 @@ static int	init_philos(t_data *data)
 
 int	init_structs(t_data *data)
 {
-	data->threads = malloc(data->ph_num * sizeof(pthread_t));
-	if (data->threads == NULL)
-		return (-1);
 	if (init_semaphores(data) == -1)
 		return (-1);
 	if (init_philos(data) == -1)

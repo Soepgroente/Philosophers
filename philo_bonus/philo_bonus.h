@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/09 17:32:16 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/15 21:01:34 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ struct s_data
 	int			i;
 	sem_t		*forks;
 	sem_t		*print;
+	sem_t		*start;
 	t_philo		*philos;
-	pthread_t	*threads;
 };
 
 struct s_philo
@@ -62,18 +62,16 @@ struct s_philo
 	int		num;
 	int		num_eaten;
 	int		max_eat;
-	int		last_eaten;
+	long	last_eaten;
 	int		t_eat;
 	int		t_think;
-	int		t_die;
+	long	t_die;
 	long	t_start;
 	bool	alive;
 	bool	saturated;
-	sem_t	*eat;
-	sem_t	*eat2;
 	sem_t	*forks;
 	sem_t	*print;
-	sem_t	*poke;
+	sem_t	*sjon;
 	t_data	*data;
 };
 
