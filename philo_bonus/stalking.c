@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/30 17:25:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/06 21:16:45 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/16 12:06:52 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,17 @@
 
 static void	kill_everyone(t_data *data)
 {
-	int	i;
 
-	i = 0;
-	while (i < data->ph_num)
-	{
-		poke_sjon(&data->philos[i], (&data->philos[i])->poke, KILL);
-		i++;
-	}
 }
 
 static bool	check_saturation(t_data *d)
 {
-	int	i;
-	int	count;
 
-	if (get_runtime(d->t_start) < d->t_eat * d->num_eat * 2)
-		return (false);
-	i = 0;
-	count = 0;
-	while (i < d->ph_num)
-	{
-		if (check_last_eaten(&d->philos[i], (&d->philos[i])->eat, false) == 1)
-			count++;
-		i++;
-	}
-	if (count == d->ph_num)
-	{
-		kill_everyone(d);
-		return (true);
-	}
-	return (false);
 }
 
 static bool	stalk_table(t_data *d)
 {
-	int	i;
 
-	i = 0;
-	while (i < d->ph_num)
-	{
-		if (poke_sjon(&d->philos[i], (&d->philos[i])->poke, NONE) == false)
-		{
-			kill_everyone(d);
-			usleep(1000);
-			printf("%d %d has died\n", get_runtime(d->t_start), i);
-			return (DEATH);
-		}
-		i++;
-	}
-	return (ALIVE);
 }
 
 void	stalk_philos(t_data *d)

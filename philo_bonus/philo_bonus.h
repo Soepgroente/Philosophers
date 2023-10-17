@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/15 21:01:34 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/17 11:14:49 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@
 # include <sys/time.h>
 # include <sys/stat.h>
 # include <semaphore.h>
-
-# define AVAILABLE 0
-# define TAKEN 1
-
-# define NONE 0
-# define KILL 1
 
 # define ALIVE 0
 # define DEATH 1
@@ -54,7 +48,7 @@ struct s_data
 	sem_t		*forks;
 	sem_t		*print;
 	sem_t		*start;
-	t_philo		*philos;
+	t_philo		**sjonnies;
 };
 
 struct s_philo
@@ -63,28 +57,28 @@ struct s_philo
 	int		num_eaten;
 	int		max_eat;
 	long	last_eaten;
-	int		t_eat;
-	int		t_think;
+	long	t_eat;
+	long	t_sleep;
 	long	t_die;
 	long	t_start;
 	bool	alive;
 	bool	saturated;
+	char	*sem_id;
 	sem_t	*forks;
 	sem_t	*print;
-	sem_t	*sjon;
+	sem_t	*poke;
 	t_data	*data;
 };
 
 /*	Initialization */
 
-int		run_threads(t_data *data, t_philo *philos);
-int		init_structs(t_data *data);
-void	*sjon_is_born(void *d);
+int		init_semaphores(t_data *data);
+int		init_sjon(t_data *data, int num);
+int		sjon_is_born(t_data *data, int num);
 
 /*	Lock functions	*/
 
-int		check_last_eaten(t_philo *sjon, sem_t *lock, bool eaten);
-bool	poke_sjon(t_philo *sjon, sem_t *lock, bool action);
+bool	poke_sjon(t_philo *sjon, sem_t *lock);
 
 /*	Monitoring	*/
 

@@ -6,63 +6,46 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/03 18:15:04 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/17 12:02:07 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	unlink_semaphores(t_data *data, t_philo *sjon)
+static void	unlink_semaphores(t_data *data)
 {
-	char	*str1;
-	char	*str2;
-	char	*str3;
-
-	str1 = ft_philitoa(sjon->num);
-	str2 = ft_philitoa(sjon->num + data->ph_num);
-	str3 = ft_philitoa(sjon->num + (data->ph_num * 2));
-	sem_unlink(str1);
-	sem_unlink(str2);
-	sem_unlink(str3);
-	free(str1);
-	free(str2);
-	free(str3);
+	sem_close(data->forks);
+	sem_close(data->print);
+	sem_close(data->start);
+	sem_unlink("/sem_fork");
+	sem_unlink("/sem_print");
+	sem_unlink("/sem_start");
+	data->forks = NULL;
+	data->print = NULL;
+	data->start = NULL;
 }
 
-static void	free_sjonnies(t_philo *sjon, int num)
+static void	free_sjonnie(t_philo *sjon, int num)
 {
-	int	i;
-
-	i = 0;
-	while (i < num)
-	{
-		sem_close(sjon[i].poke);
-		sem_close(sjon[i].eat);
-		sem_close(sjon[i].eat2);
-		unlink_semaphores(sjon->data, &sjon[i]);
-		i++;
-	}
+	sem_close(sjon->poke);
+	sem_unlink(sjon->sem_id);
+	free(sjon->sem_id);
 	free(sjon);
 	sjon = NULL;
 }
 
 void	clean_up(t_data *data)
 {
-	if (data->philos != NULL)
+	int	i;
+
+	i = 0;
+	if (data->sjonnies != NULL)
 	{
-		free_sjonnies(data->philos, data->ph_num);
-		data->philos = NULL;
+		while (i < data->ph_num)
+		{
+			free_sjonnie(data->sjonnies[i], data->sjonnies[i]->num);
+			i++;
+		}
 	}
-	if (data->forks != NULL)
-	{
-		sem_close(data->forks);
-		data->forks = NULL;
-	}
-	if (data->print != NULL)
-	{
-		sem_close(data->print);
-		data->print = NULL;
-	}
-	if (data->threads != NULL)
-		free(data->threads);
+	unlink_semaphores(data);
 }

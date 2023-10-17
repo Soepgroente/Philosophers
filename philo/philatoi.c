@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/06 16:50:51 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/14 11:45:42 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/17 15:09:26 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static bool	check_num(char *num)
 	int	i;
 
 	i = 0;
+	if (num[0] == '\0')
+		return (false);
 	while (ft_isdigit(num[i]) == true)
 		i++;
 	if (num[i] != '\0')
@@ -41,10 +43,7 @@ int	ft_philatoi(char *num)
 	i = 0;
 	result = 0;
 	if (check_num(num) == false)
-	{
-		printf("Error: invalid input 😕\n");
 		return (-1);
-	}
 	while (num[i])
 	{
 		result *= 10;

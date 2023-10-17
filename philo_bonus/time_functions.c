@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utilities.c                                        :+:    :+:            */
+/*   time_functions.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: vincent <vincent@student.42.fr>              +#+                     */
+/*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/17 14:48:36 by vincent       #+#    #+#                 */
-/*   Updated: 2023/09/30 17:35:23 by vincent       ########   odam.nl         */
+/*   Created: 2023/10/16 12:40:07 by vvan-der      #+#    #+#                 */
+/*   Updated: 2023/10/16 12:40:48 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,12 @@ long	get_time(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return ((long)time.tv_sec * 1000000 + time.tv_usec);
+	return ((long)(time.tv_sec * 1000000 + time.tv_usec));
 }
 
 int	get_runtime(long t_start)
 {
-	int	time;
-
-	time = (int)(get_time() - t_start) / 1000;
-	return (time);
+	return ((int)(get_time() - t_start) / 1000);
 }
 
 void	ft_sleep(t_philo *sjon, long sleep_duration)
@@ -33,10 +30,9 @@ void	ft_sleep(t_philo *sjon, long sleep_duration)
 	long	timestamp;
 	long	goal;
 
-	(void)sjon;
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
-	while (timestamp < goal)
+	while (timestamp < goal && poke_sjon(sjon, sjon->poke) == true)
 	{
 		usleep(500);
 		timestamp = get_time();

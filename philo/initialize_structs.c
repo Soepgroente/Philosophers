@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/15 20:41:15 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/17 15:10:17 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	init_philos(t_data *data, pthread_mutex_t *forks)
 
 static int	init_mutex_s(t_data *data)
 {
-	int		i;
+	int				i;
 	pthread_mutex_t	*forks;
 
 	i = 0;

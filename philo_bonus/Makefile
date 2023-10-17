@@ -6,7 +6,7 @@
 #    By: vincent <vincent@student.42.fr>              +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/07/02 13:49:49 by vincent       #+#    #+#                  #
-#    Updated: 2023/10/09 17:44:04 by vvan-der      ########   odam.nl          #
+#    Updated: 2023/10/16 12:40:24 by vvan-der      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS	= 	clean_up.c \
 			prepare_routine.c \
 			routine.c \
 			stalking.c \
-			utilities.c
+			time_functions.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
