@@ -1,0 +1,21 @@
+1) parse
+2) init semaphores
+3) init philos
+
+
+char *str = 0x100
+
+"hello"
+
+^ 0x100
+|
+
+str++
+
+
+char *str = 0x200
+
+"hello"
+
+^ 0x200
+|
