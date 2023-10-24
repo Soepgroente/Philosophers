@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/22 18:36:56 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/24 10:57:04 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <signal.h>
 # include <sys/time.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include <semaphore.h>
 
@@ -40,16 +41,18 @@ typedef struct s_data	t_data;
 
 struct s_data
 {
-	int			ph_num;
-	int			num;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			num_eat;
-	long		t_start;
-	sem_t		*forks;
-	sem_t		*print;
-	sem_t		*start;
+	int		ph_num;
+	int		num;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	int		num_eat;
+	long	t_start;
+	sem_t	*forks;
+	sem_t	*print;
+	sem_t	*start;
+	sem_t	*death;
+	sem_t	*saturated;
 };
 
 struct s_philo
@@ -66,14 +69,14 @@ struct s_philo
 	bool	saturated;
 	sem_t	*forks;
 	sem_t	*print;
-	sem_t	*poke;
 	sem_t	*start;
+	sem_t	*death;
+	sem_t	*saturated;
 };
 
 /*	Initialization */
 
 int		init_semaphores(t_data *data);
-int		init_sjon(t_data *data);
 t_philo	*init_sjon(t_data *data);
 
 /*	Lock functions	*/
@@ -88,7 +91,7 @@ void	kill_children(pids, data->ph_num);
 
 int		ft_philatoi(char *num);
 char	*ft_philitoa(int n);
-void	clean_up(t_data *data);
+void	clean_up(t_data *data, t_philo *philo);
 void	print_message(t_philo *sjon, char *msg);
 
 /*	Time and sleep	*/

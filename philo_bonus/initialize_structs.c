@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/22 18:18:23 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/24 10:44:54 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,15 @@ t_philo	*init_sjon(t_data *data)
 
 int	init_semaphores(t_data *data)
 {
-	sem_unlink("/sem_fork");
+	sem_unlink("/sem_forks");
 	sem_unlink("/sem_print");
 	sem_unlink("/sem_start");
-	data->forks = sem_open("/sem_fork", O_CREAT, 0644, data->ph_num);
-	if (data->forks == SEM_FAILED)
-		return (-1);
+	sem_unlink("/sem_death");
+	sem_unlink("/sem_saturated");
+	data->forks = sem_open("/sem_forks", O_CREAT, 0644, data->ph_num);
 	data->print = sem_open("/sem_print", O_CREAT, 0644, 1);
-	if (data->print == SEM_FAILED)
-	{
-		sem_close(data->forks);
-		sem_unlink("/sem_fork");
-		return (-1);
-	}
-	data->start = sem_open("/sem_start", O_CREAT, 0644, 1);
-	if (data->start == SEM_FAILED)
-	{
-		sem_close(data->forks);
-		sem_close(data->print);
-		sem_unlink("/sem_print");
-		sem_unlink("/sem_start");
-		return (-1);
-	}
+	data->start = sem_open("/sem_start", O_CREAT, 0644, 0);
+	data->death = sem_open("/sem_death", O_CREAT, 0644, 1);
+	data->saturated = sem_open("/sem_saturated", O_CREAT, 0644, 1);
 	return (0);
 }
