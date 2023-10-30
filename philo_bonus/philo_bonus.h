@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/24 10:57:04 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/30 11:50:42 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct s_data
 	int		t_sleep;
 	int		num_eat;
 	long	t_start;
+	pid_t	*processes;
 	sem_t	*forks;
 	sem_t	*print;
 	sem_t	*start;
@@ -86,6 +87,7 @@ bool	poke_sjon(t_philo *sjon, sem_t *lock);
 /*	Monitoring	*/
 
 void	kill_children(pids, data->ph_num);
+int		wait_for_death(t_data *d);
 
 /*	Utility functions	*/
 

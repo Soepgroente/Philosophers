@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/22 18:40:55 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/30 11:44:54 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 static int	fork_process(t_data *data)
 {
 	pid_t	id;
-	pid_t	*pids;
 
 	id = 0;
-	pids = ft_calloc(data->ph_num * sizeof(pid_t));
-	if (pids == NULL)
+	data->processes = ft_calloc(data->ph_num * sizeof(pid_t));
+	if (data->processes == NULL)
 		return (-1);
 	sem_wait(data->start);
 	while (data->num < data->ph_num)
@@ -27,12 +26,12 @@ static int	fork_process(t_data *data)
 		id = fork();
 		if (id == -1)
 		{
-			kill_children(pids, data->ph_num);
+			kill_children(data->processes, data->ph_num);
 			return (-1);
 		}
 		if (id == 0)
 			return (sjon_is_born(data));
-		pids[data->num] = id;
+		data->processes[data->num] = id;
 		data->num++;
 	}
 	sem_post(data->start);
@@ -79,16 +78,14 @@ int	main(int argc, char **argv)
 		return (3);
 	if (fork_process(&data) == -1)
 		return (4);
-	else
-	{
-		waitpid(-1, NULL, 0);
-		kill_children()
-	}
+	wait_for_death(&data);
+	waitpid(-1, NULL, 0);
+	kill_children(&data.processes, &data.ph_num);
 	// if (run_threads(&data, data.philos) == -1)
 	// {
 	// 	clean_up(&data);
 	// 	return (4);
 	// }
-	clean_up(&data);
+	clean_up(&data, NULL);
 	return (0);
 }

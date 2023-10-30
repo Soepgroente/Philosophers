@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/12 20:55:47 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/15 19:11:12 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/30 11:42:46 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ void	*henk_is_born(void *input)
 
 	henk = (t_philo *) input;
 	pthread_mutex_lock(&henk->data->start);
+	if (henk->data->go == false)
+	{
+		pthread_mutex_unlock(&henk->data->start);
+		return (NULL);
+	}
 	pthread_mutex_unlock(&henk->data->start);
 	henk->t_start = henk->data->t_start;
 	if (henk->num % 2 == 1)

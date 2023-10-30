@@ -6,22 +6,21 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 12:22:39 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/15 19:38:00 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/30 15:30:28 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	join_threads(t_data *data, pthread_t *threads)
+static int	join_threads(t_data *data, pthread_t *threads, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->ph_num)
+	if (i != data->ph_num)
+		pthread_mutex_unlock(&data->start);
+	while (i > 0)
 	{
+		i--;
 		if (pthread_join(threads[i], NULL) != 0)
 			return (-1);
-		i++;
 	}
 	return (0);
 }
@@ -37,7 +36,7 @@ int	thread_carefully(t_data *data, t_philo *henks)
 	while (i < data->ph_num)
 	{
 		if (pthread_create(&threads[i], NULL, &henk_is_born, &henks[i]) != 0)
-			return (-1);
+			return (join_threads(data, threads, i), -1);
 		i++;
 	}
 	data->t_start = get_time();
@@ -46,9 +45,10 @@ int	thread_carefully(t_data *data, t_philo *henks)
 		i--;
 		henks[i].last_eaten = data->t_start;
 	}
+	data->go = true;
 	pthread_mutex_unlock(&data->start);
 	stalk_philos(data);
-	if (join_threads(data, threads) == -1)
+	if (join_threads(data, threads, data->ph_num) == -1)
 		return (-1);
 	return (0);
 }

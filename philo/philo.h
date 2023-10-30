@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/15 19:57:32 by vincent       ########   odam.nl         */
+/*   Updated: 2023/10/30 11:39:18 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ struct s_data
 	int				t_sleep;
 	int				num_eat;
 	int				num;
+	bool			go;
 	long			t_start;
 	pthread_mutex_t	start;
 	pthread_mutex_t	print_lock;

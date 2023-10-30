@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/17 15:13:13 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/30 11:39:55 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	parse_input(t_data *data, int argc, char **argv)
 {
 	data->forks = NULL;
 	data->philos = NULL;
+	data->go = false;
 	data->ph_num = ft_philatoi(argv[1]);
 	if (data->ph_num == 0)
 		return (printf("Not enough philosophers 🤓\n"), -1);
