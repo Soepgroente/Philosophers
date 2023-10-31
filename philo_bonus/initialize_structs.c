@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/24 10:44:54 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/31 13:25:21 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,22 @@ static void	sjon_data(t_data *data, t_philo *sjon, int num)
 	sjon->t_die = data->t_die * 1000;
 	sjon->t_sleep = data->t_sleep * 1000;
 	sjon->alive = true;
-	sjon->saturated = false;
+	sjon->death = data->death;
 	sjon->forks = data->forks;
 	sjon->print = data->print;
+	sjon->saturated = data->saturated;
+	sjon->start = data->start;
 }
 
 t_philo	*init_sjon(t_data *data)
 {
-	
+	t_philo	*sjon;
+
+	sjon = malloc(sizeof(t_philo));
+	if (sjon == NULL)
+		return (NULL);
+	sjon_data(data, sjon, data->num);
+	return (sjon);
 }
 
 int	init_semaphores(t_data *data)
@@ -42,6 +50,10 @@ int	init_semaphores(t_data *data)
 	data->print = sem_open("/sem_print", O_CREAT, 0644, 1);
 	data->start = sem_open("/sem_start", O_CREAT, 0644, 0);
 	data->death = sem_open("/sem_death", O_CREAT, 0644, 1);
-	data->saturated = sem_open("/sem_saturated", O_CREAT, 0644, 1);
+	data->saturated = sem_open("/sem_saturated", O_CREAT, 0644, 0);
+	if (data->forks == SEM_FAILED || data->print == SEM_FAILED || \
+	data->start == SEM_FAILED || data->death == SEM_FAILED || \
+	data->saturated == SEM_FAILED)
+		return (-1);
 	return (0);
 }

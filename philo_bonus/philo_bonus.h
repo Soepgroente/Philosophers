@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/30 11:50:42 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/31 13:27:43 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ struct s_philo
 	long	t_die;
 	long	t_start;
 	bool	alive;
-	bool	saturated;
 	sem_t	*forks;
 	sem_t	*print;
 	sem_t	*start;
@@ -75,24 +74,33 @@ struct s_philo
 	sem_t	*saturated;
 };
 
+/*	Cleanup	*/
+
 /*	Initialization */
 
 int		init_semaphores(t_data *data);
 t_philo	*init_sjon(t_data *data);
+int		fork_process(t_data *data);
 
 /*	Lock functions	*/
 
-bool	poke_sjon(t_philo *sjon, sem_t *lock);
+/*	Routine	*/
+
+int		sjon_is_born(t_philo *sjon);
 
 /*	Monitoring	*/
 
-void	kill_children(pids, data->ph_num);
-int		wait_for_death(t_data *d);
+bool	poke_sjon(t_philo *sjon);
+void	kill_children(pid_t *pids, int amount);
+int		wait_for_ending(t_data *d);
+void	kill_sjon(t_philo *sjon);
+void	simulation_end(t_data *data);
 
 /*	Utility functions	*/
 
 int		ft_philatoi(char *num);
 char	*ft_philitoa(int n);
+void	*ft_calloc(size_t size);
 void	clean_up(t_data *data, t_philo *philo);
 void	print_message(t_philo *sjon, char *msg);
 

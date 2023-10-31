@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/16 12:40:07 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/16 12:40:48 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/31 11:48:22 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_sleep(t_philo *sjon, long sleep_duration)
 
 	timestamp = get_time();
 	goal = timestamp + sleep_duration;
-	while (timestamp < goal && poke_sjon(sjon, sjon->poke) == true)
+	while (timestamp < goal && poke_sjon(sjon) == true)
 	{
 		usleep(500);
 		timestamp = get_time();

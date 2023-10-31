@@ -6,37 +6,11 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/30 11:44:54 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/10/31 13:28:08 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-static int	fork_process(t_data *data)
-{
-	pid_t	id;
-
-	id = 0;
-	data->processes = ft_calloc(data->ph_num * sizeof(pid_t));
-	if (data->processes == NULL)
-		return (-1);
-	sem_wait(data->start);
-	while (data->num < data->ph_num)
-	{
-		id = fork();
-		if (id == -1)
-		{
-			kill_children(data->processes, data->ph_num);
-			return (-1);
-		}
-		if (id == 0)
-			return (sjon_is_born(data));
-		data->processes[data->num] = id;
-		data->num++;
-	}
-	sem_post(data->start);
-	return (0);
-}
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
@@ -65,6 +39,7 @@ static int	parse_input(t_data *data, int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	int		returnval;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -76,16 +51,15 @@ int	main(int argc, char **argv)
 		return (2);
 	if (init_semaphores(&data) == -1)
 		return (3);
-	if (fork_process(&data) == -1)
-		return (4);
-	wait_for_death(&data);
-	waitpid(-1, NULL, 0);
-	kill_children(&data.processes, &data.ph_num);
-	// if (run_threads(&data, data.philos) == -1)
-	// {
-	// 	clean_up(&data);
-	// 	return (4);
-	// }
+	returnval = fork_process(&data);
+	if (returnval == 42)
+		return (0);
+	if (returnval == -1)
+		return (1);
+	if (wait_for_ending(&data) == 0)
+		simulation_end(&data);
+	else
+		printf("Simulation has gone wrong\n");
 	clean_up(&data, NULL);
 	return (0);
 }
