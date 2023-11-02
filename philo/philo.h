@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/11/02 14:14:12 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/02 14:58:36 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ void	print_message(t_philo *henk, pthread_mutex_t *lock, char *msg);
 int		get_runtime(long t_start);
 long	get_time(void);
 void	power_naps(t_philo *henk, long sleep_duration);
+void	special_naps(t_philo *henk);
 
 #endif

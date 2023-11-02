@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/12 20:55:39 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/24 18:06:53 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 15:01:44 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,26 @@ long	get_time(void)
 int	get_runtime(long start_time)
 {
 	return ((int)(get_time() - start_time) / 1000);
+}
+
+void	special_naps(t_philo *henk)
+{
+	long	timestamp;
+	long	goal;
+	long	lifetime;
+	long	x;
+
+	x = 100 + henk->data->ph_num * 5;
+	timestamp = get_time();
+	lifetime = henk->t_die - (get_time() - henk->last_eaten);
+	if (lifetime > henk->t_eat * 3)
+		return ;
+	goal = timestamp + lifetime - henk->t_eat;
+	while (timestamp < goal)
+	{
+		usleep(x);
+		timestamp = get_time();
+	}
 }
 
 void	power_naps(t_philo *henk, long sleep_duration)

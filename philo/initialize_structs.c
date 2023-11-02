@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/11/02 14:16:21 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/02 14:38:53 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	fork_assignment(t_philo *henk, pthread_mutex_t *forks, int i)
 {
 	if (i == 0)
 	{
-		henk[i].fork1 = &forks[0];
-		henk[i].fork2 = &forks[henk->data->ph_num - 1];
+		henk[i].fork1 = &forks[henk->data->ph_num - 1];
+		henk[i].fork2 = &forks[0];
 	}
 	else if (i % 2 == 0)
 	{
