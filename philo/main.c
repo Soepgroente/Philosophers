@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:57 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/30 11:39:55 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 13:41:48 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 	{
-		printf("Please insert # of philos, time to die, time to eat, time to sleep ");
-		printf("and optionally # of times each philo eats\n");
+		printf("Please insert # of philos, time to die, time to eat, ");
+		printf("time to sleep and optionally # of times each philo eats\n");
 		return (1);
 	}
 	if (parse_input(&data, argc, argv) == -1)

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:14:57 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/17 15:10:17 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 14:16:21 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,8 @@ static void	henk_data(t_data *data, t_philo *henk, int num)
 	henk->num = num;
 	henk->num_eaten = 0;
 	henk->max_eat = data->num_eat;
-	henk->t_eat = data->t_eat;
+	henk->t_eat = data->t_eat * 1000;
 	henk->t_die = data->t_die * 1000;
-	if (data->t_sleep == 0 || data->t_eat == 0)
-		henk->t_think = 1;
-	else
-		henk->t_think = 0;
 	henk->alive = true;
 	henk->saturated = false;
 	henk->data = data;
@@ -32,8 +28,8 @@ static void	fork_assignment(t_philo *henk, pthread_mutex_t *forks, int i)
 {
 	if (i == 0)
 	{
-		henk[i].fork1 = &forks[henk->data->ph_num - 1];
-		henk[i].fork2 = &forks[0];
+		henk[i].fork1 = &forks[0];
+		henk[i].fork2 = &forks[henk->data->ph_num - 1];
 	}
 	else if (i % 2 == 0)
 	{
@@ -107,12 +103,17 @@ int	init_structs(t_data *data)
 	if (data->threads == NULL)
 		return (-1);
 	if (init_mutex_s(data) == -1)
+	{
+		free(data->threads);
 		return (-1);
+	}
 	if (init_philos(data, data->forks) == -1)
 	{
 		pthread_mutex_destroy(&data->print_lock);
 		pthread_mutex_destroy(&data->start);
 		destroy_forks(data->forks, data->ph_num);
+		free(data->threads);
+		free(data->forks);
 		return (-1);
 	}
 	return (0);

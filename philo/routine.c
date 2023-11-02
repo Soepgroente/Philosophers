@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/12 20:55:47 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/30 11:42:46 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 14:07:28 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	reconsider_life_choices(t_philo *henk)
 	if (poke_henk(henk) == false)
 		return ;
 	print_message(henk, &henk->data->print_lock, "is thinking\n");
-	usleep(100);
 }
 
 static void	after_dinner_dip(t_data *data, t_philo *henk)

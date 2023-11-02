@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/02 13:49:52 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/30 11:39:18 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 14:14:12 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ struct s_philo
 	int				num_eaten;
 	int				max_eat;
 	long			last_eaten;
-	int				t_eat;
-	int				t_think;
+	long			t_eat;
 	long			t_die;
 	long			t_start;
 	bool			alive;

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/17 15:01:22 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 14:14:34 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	eat_foods(t_philo *henk)
 	henk->num_eaten++;
 	henk->last_eaten = get_time();
 	pthread_mutex_unlock(&henk->lock);
-	power_naps(henk, henk->t_eat * 1000);
+	power_naps(henk, henk->t_eat);
 }
 
 void	print_message(t_philo *henk, pthread_mutex_t *print_lock, char *msg)
