@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/31 13:28:08 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 15:08:54 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	main(int argc, char **argv)
 	if (wait_for_ending(&data) == 0)
 		simulation_end(&data);
 	else
+	{
 		printf("Simulation has gone wrong\n");
+		simulation_end(&data);
+	}
 	clean_up(&data, NULL);
 	return (0);
 }

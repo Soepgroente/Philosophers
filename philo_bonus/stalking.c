@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/30 17:25:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/10/31 13:44:00 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 16:02:21 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,28 @@ static void	*check_saturation(void *arg)
 		sem_wait(data->saturated);
 		i++;
 	}
+	sem_post(data->death);
 	return (NULL);
 }
 
 int	wait_for_ending(t_data *data)
 {
 	pthread_t	thread;
+	int			i;
 
+	i = 0;
+	thread = NULL;
 	if (data->num_eat < INT_MAX)
 	{
 		if (pthread_create(&thread, NULL, &check_saturation, data) != 0)
 			return (-1);
-		pthread_join(thread, NULL);
-		return (0);
 	}
 	sem_wait(data->death);
+	while (i < data->ph_num)
+	{
+		sem_post(data->saturated);
+		i++;
+	}
+	pthread_join(thread, NULL);
 	return (0);
 }

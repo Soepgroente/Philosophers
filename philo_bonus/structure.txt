@@ -1,4 +1,0 @@
-1) parse
-2) init semaphores
-3) init philos
-

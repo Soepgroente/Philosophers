@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/31 13:27:43 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 15:42:32 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	print_message(t_philo *sjon, char *msg);
 
 int		get_runtime(long t_start);
 long	get_time(void);
-void	ft_sleep(t_philo *sjon, long sleep_duration);
+void	power_naps(t_philo *sjon, long sleep_duration);
+void	special_naps(t_philo *sjon);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/21 16:28:03 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/10/31 11:44:44 by vvan-der      ########   odam.nl         */
+/*   Updated: 2023/11/02 16:06:56 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_message(t_philo *sjon, char *msg)
 		sem_post(sjon->print);
 		return ;
 	}
-	printf("%d %d %s", get_runtime(sjon->t_start), sjon->num, msg);
+	printf("%d %d %s", get_runtime(sjon->t_start), sjon->num + 1, msg);
 	sem_post(sjon->print);
 }
 
@@ -30,6 +30,9 @@ bool	poke_sjon(t_philo *sjon)
 		return (false);
 	if (sjon->t_die < get_time() - sjon->last_eaten)
 	{
+		sem_post(sjon->death);
+		printf("%d %d has died\n", get_runtime(sjon->t_start), sjon->num + 1);
+		sem_wait(sjon->print);
 		sjon->alive = false;
 		return (false);
 	}
