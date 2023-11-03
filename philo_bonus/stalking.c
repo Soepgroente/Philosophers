@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/30 17:25:48 by vincent       #+#    #+#                 */
-/*   Updated: 2023/11/02 16:02:21 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/03 15:48:06 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@ int	wait_for_ending(t_data *data)
 	int			i;
 
 	i = 0;
-	thread = NULL;
-	if (data->num_eat < INT_MAX)
-	{
-		if (pthread_create(&thread, NULL, &check_saturation, data) != 0)
-			return (-1);
-	}
+	if (pthread_create(&thread, NULL, &check_saturation, data) != 0)
+		return (-1);
 	sem_wait(data->death);
 	while (i < data->ph_num)
 	{
