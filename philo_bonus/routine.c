@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.42.fr>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/12 12:18:22 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/11/02 16:35:37 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/04 19:13:00 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	eat_sleep_repeat(t_philo *sjon)
 	}
 }
 
-int	sjon_is_born(t_philo *sjon)
+void	sjon_is_born(t_philo *sjon)
 {
 	sem_wait(sjon->start);
 	sem_post(sjon->start);

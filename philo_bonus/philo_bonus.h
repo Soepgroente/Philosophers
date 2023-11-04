@@ -6,7 +6,7 @@
 /*   By: vvan-der <vvan-der@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/25 11:12:26 by vvan-der      #+#    #+#                 */
-/*   Updated: 2023/11/02 15:42:32 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/04 19:13:35 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ struct s_data
 	long	t_start;
 	pid_t	*processes;
 	sem_t	*forks;
+	sem_t	*freeze;
 	sem_t	*print;
 	sem_t	*start;
 	sem_t	*death;
@@ -68,6 +69,7 @@ struct s_philo
 	long	t_start;
 	bool	alive;
 	sem_t	*forks;
+	sem_t	*freeze;
 	sem_t	*print;
 	sem_t	*start;
 	sem_t	*death;
@@ -86,7 +88,7 @@ int		fork_process(t_data *data);
 
 /*	Routine	*/
 
-int		sjon_is_born(t_philo *sjon);
+void	sjon_is_born(t_philo *sjon);
 
 /*	Monitoring	*/
 

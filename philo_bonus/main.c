@@ -6,11 +6,21 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
-/*   Updated: 2023/11/02 15:08:54 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/04 18:51:36 by vincent       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static void	not_much_of_a_simulation(t_data *data)
+{
+	data->t_start = get_time();
+	printf("%d %d is thinking\n", get_runtime(data->t_start), 1);
+	printf("%d %d has taken a fork\n", get_runtime(data->t_start), 1);
+	usleep(data->t_die * 1000);
+	printf("%d %d has died\n", get_runtime(data->t_start), 1);
+	exit(EXIT_SUCCESS);
+}
 
 static int	parse_input(t_data *data, int argc, char **argv)
 {
@@ -33,6 +43,8 @@ static int	parse_input(t_data *data, int argc, char **argv)
 	if (data->ph_num == -1 || data->t_die == -1 || data->t_eat == -1 || \
 		data->t_sleep == -1 || data->num_eat == -1)
 		return (-1);
+	if (data->ph_num == 1)
+		not_much_of_a_simulation(data);
 	return (0);
 }
 
@@ -54,15 +66,11 @@ int	main(int argc, char **argv)
 	returnval = fork_process(&data);
 	if (returnval == 42)
 		return (0);
-	if (returnval == -1)
-		return (1);
-	if (wait_for_ending(&data) == 0)
-		simulation_end(&data);
-	else
-	{
+	else if (returnval == -1)
+		return (4);
+	if (wait_for_ending(&data) != 0)
 		printf("Simulation has gone wrong\n");
-		simulation_end(&data);
-	}
+	simulation_end(&data);
 	clean_up(&data, NULL);
 	return (0);
 }
