@@ -6,7 +6,7 @@
 /*   By: vincent <vincent@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/15 20:40:17 by vincent       #+#    #+#                 */
-/*   Updated: 2023/11/04 18:51:36 by vincent       ########   odam.nl         */
+/*   Updated: 2023/11/06 12:53:56 by vvan-der      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static int	parse_input(t_data *data, int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_data	data;
-	int		returnval;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -63,10 +62,7 @@ int	main(int argc, char **argv)
 		return (2);
 	if (init_semaphores(&data) == -1)
 		return (3);
-	returnval = fork_process(&data);
-	if (returnval == 42)
-		return (0);
-	else if (returnval == -1)
+	if (fork_process(&data) == -1)
 		return (4);
 	if (wait_for_ending(&data) != 0)
 		printf("Simulation has gone wrong\n");
